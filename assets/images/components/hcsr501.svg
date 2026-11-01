@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240">
+  <ellipse cx="120" cy="200" rx="86" ry="10" fill="rgba(0,0,0,.16)"/>
+  <rect x="100" y="176" width="8" height="26" fill="#94a3b8"/>
+  <rect x="116" y="176" width="8" height="28" fill="#94a3b8"/>
+  <rect x="132" y="176" width="8" height="26" fill="#94a3b8"/>
+  <rect x="56" y="112" width="128" height="66" rx="10" fill="#f8fafc" stroke="#dbe2ea" stroke-width="2"/>
+  <path d="M82 112 a38 38 0 0 1 76 0 Z" fill="#eef2f7" stroke="#c3ccd6" stroke-width="2.5"/>
+  <g fill="none" stroke="#c3ccd6" stroke-width="1.8">
+    <path d="M90 112 a30 30 0 0 1 60 0"/><path d="M98 112 a22 22 0 0 1 44 0"/><path d="M106 112 a14 14 0 0 1 28 0"/>
+    <line x1="120" y1="74" x2="120" y2="112"/><line x1="98" y1="84" x2="142" y2="100"/><line x1="142" y1="84" x2="98" y2="100"/>
+  </g>
+  <rect x="106" y="96" width="28" height="16" rx="3" fill="#fef3c7" stroke="#d4af37" stroke-width="2"/>
+  <rect x="66" y="150" width="20" height="16" rx="3" fill="#fbbf24"/>
+  <rect x="94" y="150" width="20" height="16" rx="3" fill="#fbbf24"/>
+  <circle cx="164" cy="158" r="6" fill="#22c55e"/>
+  <text x="120" y="106" text-anchor="middle" font-family="Arial" font-size="9" font-weight="bold" fill="#64748b">HC-SR501</text>
+</svg>

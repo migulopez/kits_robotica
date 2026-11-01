@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240">
+  <ellipse cx="120" cy="208" rx="86" ry="10" fill="rgba(0,0,0,.18)"/>
+  <rect x="84" y="172" width="9" height="32" rx="2" fill="#d4af37"/>
+  <rect x="115" y="172" width="9" height="34" rx="2" fill="#d4af37"/>
+  <rect x="146" y="172" width="9" height="32" rx="2" fill="#d4af37"/>
+  <rect x="66" y="116" width="108" height="58" rx="9" fill="#1f2937"/>
+  <rect x="66" y="116" width="108" height="16" rx="8" fill="#374151"/>
+  <line x1="104" y1="118" x2="158" y2="64" stroke="#cbd5e1" stroke-width="9" stroke-linecap="round"/>
+  <circle cx="161" cy="61" r="10" fill="#94a3b8" stroke="#6b7280" stroke-width="2"/>
+  <circle cx="166" cy="128" r="8" fill="#ef4444"/>
+  <text x="120" y="168" text-anchor="middle" font-family="Arial" font-size="9" font-weight="bold" fill="#9ca3af">MICROSWITCH</text>
+</svg>

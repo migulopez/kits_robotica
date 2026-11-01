@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240">
+  <ellipse cx="120" cy="200" rx="86" ry="10" fill="rgba(0,0,0,.18)"/>
+  <rect x="80" y="170" width="8" height="26" fill="#d4af37"/>
+  <rect x="112" y="170" width="8" height="26" fill="#d4af37"/>
+  <rect x="144" y="170" width="8" height="26" fill="#d4af37"/>
+  <rect x="62" y="84" width="116" height="88" rx="10" fill="#1d4ed8"/>
+  <circle cx="98" cy="122" r="22" fill="#fef3c7" stroke="#d4af37" stroke-width="4"/>
+  <path d="M84 130 L92 114 L100 130 L108 114 L112 122" fill="none" stroke="#b45309" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="132" y="98" width="32" height="20" rx="3" fill="#0b1120"/>
+  <text x="148" y="111" text-anchor="middle" font-family="Arial" font-size="7" fill="#e5e7eb">LM393</text>
+  <rect x="132" y="128" width="26" height="18" rx="3" fill="#3b82f6"/>
+  <circle cx="145" cy="137" r="5" fill="#1e3a8a"/>
+  <circle cx="74" cy="156" r="6" fill="#facc15"/>
+  <text x="120" y="80" text-anchor="middle" font-family="Arial" font-size="9" font-weight="bold" fill="#bfdbfe">LDR LIGHT</text>
+</svg>

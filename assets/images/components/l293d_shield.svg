@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240">
+  <ellipse cx="120" cy="208" rx="96" ry="10" fill="rgba(0,0,0,.18)"/>
+  <rect x="52" y="158" width="136" height="34" rx="7" fill="#0f766e"/>
+  <rect x="60" y="164" width="22" height="14" rx="2" fill="#c0c7d1"/>
+  <text x="140" y="180" text-anchor="middle" font-family="Arial" font-size="10" font-weight="bold" fill="#f8fafc">UNO</text>
+  <rect x="44" y="70" width="152" height="92" rx="9" fill="#1e40af"/>
+  <rect x="44" y="70" width="152" height="92" rx="9" fill="rgba(255,255,255,.06)"/>
+  <g fill="#3b82f6" stroke="#1e3a8a" stroke-width="2">
+    <rect x="52" y="58" width="28" height="18" rx="3"/><rect x="88" y="58" width="28" height="18" rx="3"/>
+    <rect x="124" y="58" width="28" height="18" rx="3"/><rect x="160" y="58" width="28" height="18" rx="3"/>
+  </g>
+  <g fill="#0b1120"><circle cx="66" cy="67" r="3"/><circle cx="102" cy="67" r="3"/><circle cx="138" cy="67" r="3"/><circle cx="174" cy="67" r="3"/></g>
+  <rect x="66" y="92" width="36" height="24" rx="3" fill="#0b1120"/>
+  <rect x="138" y="92" width="36" height="24" rx="3" fill="#0b1120"/>
+  <text x="84" y="107" text-anchor="middle" font-family="Arial" font-size="8" fill="#e5e7eb">L293D</text>
+  <text x="156" y="107" text-anchor="middle" font-family="Arial" font-size="8" fill="#e5e7eb">L293D</text>
+  <circle cx="66" cy="134" r="6" fill="#22c55e"/>
+  <circle cx="84" cy="134" r="6" fill="#ef4444"/>
+  <rect x="106" y="126" width="28" height="16" rx="3" fill="#0b1120"/>
+  <rect x="60" y="146" width="120" height="10" rx="3" fill="#111827"/>
+  <text x="120" y="50" text-anchor="middle" font-family="Arial" font-size="9" font-weight="bold" fill="#93c5fd">MOTOR SHIELD</text>
+</svg>

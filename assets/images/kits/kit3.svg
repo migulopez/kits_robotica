@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 220">
+  <defs>
+    <linearGradient id="k3f" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#34d399"/><stop offset="1" stop-color="#047857"/>
+    </linearGradient>
+    <linearGradient id="k3t" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#a7f3d0"/><stop offset="1" stop-color="#10b981"/>
+    </linearGradient>
+  </defs>
+  <ellipse cx="130" cy="206" rx="102" ry="11" fill="rgba(0,0,0,.28)"/>
+  <polygon points="30,62 62,32 232,32 200,62" fill="url(#k3t)"/>
+  <polygon points="200,62 232,32 232,162 200,192" fill="#064e3b"/>
+  <rect x="30" y="62" width="170" height="130" rx="8" fill="url(#k3f)"/>
+  <rect x="30" y="62" width="170" height="24" rx="8" fill="rgba(255,255,255,.25)"/>
+  <rect x="48" y="98" width="134" height="82" rx="8" fill="#ecfdf5"/>
+  <text x="115" y="130" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#065f46">KIT 3</text>
+  <text x="115" y="146" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#064e3b">AUTOMATIZACIÓN</text>
+  <g fill="none" stroke="#065f46" stroke-width="3">
+    <rect x="100" y="156" width="30" height="18" rx="3"/>
+    <line x1="106" y1="156" x2="106" y2="150"/><line x1="115" y1="156" x2="115" y2="150"/><line x1="124" y1="156" x2="124" y2="150"/>
+    <circle cx="115" cy="165" r="4"/>
+  </g>
+</svg>
