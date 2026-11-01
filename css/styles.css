@@ -375,3 +375,15 @@ body {
   .kit-box img { height: 130px; }
   .kit-toolbar { justify-content: center; text-align: center; }
 }
+
+/* ---------- CTA del laboratorio virtual en el encabezado ---------- */
+.header-cta { text-align: center; margin: 14px 0 0; }
+.lab-open-btn.big {
+  font-size: 1.05rem;
+  padding: 13px 28px;
+  animation: cta-pulse 2.4s ease-in-out infinite;
+}
+@keyframes cta-pulse {
+  0%, 100% { box-shadow: 0 8px 18px rgba(16, 185, 129, 0.35); }
+  50% { box-shadow: 0 8px 30px rgba(16, 185, 129, 0.75); }
+}
