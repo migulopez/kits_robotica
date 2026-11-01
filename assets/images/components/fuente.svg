@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240">
+  <ellipse cx="120" cy="206" rx="92" ry="10" fill="rgba(0,0,0,.22)"/>
+  <rect x="38" y="66" width="164" height="126" rx="14" fill="#374151"/>
+  <rect x="38" y="66" width="164" height="126" rx="14" fill="rgba(255,255,255,.06)"/>
+  <rect x="52" y="82" width="86" height="48" rx="6" fill="#0f172a" stroke="#111827" stroke-width="2"/>
+  <text x="95" y="112" text-anchor="middle" font-family="monospace" font-size="18" font-weight="bold" fill="#4ade80">5.0 V</text>
+  <circle cx="166" cy="106" r="22" fill="#1f2937" stroke="#4b5563" stroke-width="3"/>
+  <line x1="166" y1="106" x2="178" y2="94" stroke="#e5e7eb" stroke-width="4" stroke-linecap="round"/>
+  <rect x="52" y="144" width="60" height="8" rx="4" fill="#4b5563"/>
+  <rect x="52" y="158" width="42" height="8" rx="4" fill="#4b5563"/>
+  <circle cx="60" cy="186" r="13" fill="#dc2626" stroke="#7f1d1d" stroke-width="3"/>
+  <circle cx="60" cy="186" r="5" fill="#450a0a"/>
+  <circle cx="180" cy="186" r="13" fill="#111827" stroke="#4b5563" stroke-width="3"/>
+  <circle cx="180" cy="186" r="5" fill="#000"/>
+  <text x="60" cy="214" text-anchor="middle" font-family="Arial" font-size="10" fill="#fca5a5">+</text>
+  <text x="180" cy="214" text-anchor="middle" font-family="Arial" font-size="10" fill="#9ca3af">−</text>
+  <text x="120" y="58" text-anchor="middle" font-family="Arial" font-size="10" font-weight="bold" fill="#9ca3af">FUENTE 0–12 V</text>
+</svg>

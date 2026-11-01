@@ -6,6 +6,7 @@
   <title>Laboratorio Virtual de Robótica Educativa</title>
   <meta name="description" content="Plataforma interactiva para explorar los kits de robótica educativa: selecciona un kit, abre su caja y explora cada componente con su ficha técnica." />
   <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/lab.css" />
 </head>
 <body>
 
@@ -19,6 +20,9 @@
     <!-- ============ VISTA INICIAL: MESA CON LAS 3 CAJAS ============ -->
     <section id="home-view" class="view">
       <p class="hint">👆 Haz clic sobre una de las cajas para abrir el kit y explorar sus componentes</p>
+      <p style="text-align:center; margin-top:14px;">
+        <button id="home-lab-btn" type="button" class="lab-open-btn">⚡ Abrir laboratorio virtual de electrónica</button>
+      </p>
       <div class="workbench">
         <div id="kit-shelf" aria-label="Cajas de los kits disponibles"></div>
       </div>
@@ -28,6 +32,7 @@
     <section id="kit-view" class="view hidden">
       <div class="kit-toolbar">
         <button id="back-btn" type="button" aria-label="Volver a la mesa de trabajo">⬅ Volver a la mesa</button>
+        <button id="lab-btn" type="button" class="lab-open-btn">⚡ Laboratorio virtual</button>
         <div class="kit-heading">
           <h2 id="kit-title"></h2>
           <p id="kit-desc"></p>
@@ -40,6 +45,89 @@
     </section>
 
   </main>
+
+  <!-- ============ LABORATORIO VIRTUAL DE ELECTRÓNICA ============ -->
+  <section id="lab-view" class="view hidden">
+    <div class="lab-toolbar">
+      <button id="lab-back-btn" type="button" class="btn">⬅ Volver a los kits</button>
+      <h2>⚡ Laboratorio virtual de electrónica</h2>
+      <div class="lab-actions">
+        <button id="btn-power" type="button" class="btn warn">⏻ Alimentación: OFF</button>
+        <button id="btn-reset" type="button" class="btn">↺ Reiniciar</button>
+        <button id="btn-clear" type="button" class="btn danger">🗑 Limpiar mesa</button>
+        <button id="btn-projects" type="button" class="btn accent">📚 Prácticas guiadas</button>
+        <span class="zoom-ctl">
+          <button id="btn-zoom-out" type="button" class="btn sm">−</button>
+          <span id="zoom-label">100%</span>
+          <button id="btn-zoom-in" type="button" class="btn sm">+</button>
+        </span>
+        <button id="btn-rotate" type="button" class="btn">⟳ Rotar componente</button>
+      </div>
+    </div>
+
+    <div class="lab-body">
+      <!-- A. Panel de componentes -->
+      <aside id="lab-palette">
+        <div class="palette-head">
+          <span>Kit:</span>
+          <div id="palette-kits" class="seg">
+            <button type="button" data-kit="all" class="on">Todos</button>
+            <button type="button" data-kit="1">Kit 1</button>
+            <button type="button" data-kit="2">Kit 2</button>
+            <button type="button" data-kit="3">Kit 3</button>
+          </div>
+        </div>
+        <div class="wire-tools">
+          <span>Cable:</span>
+          <div id="wire-colors"></div>
+        </div>
+        <div id="palette-cats"></div>
+      </aside>
+
+      <!-- B. Mesa de simulación -->
+      <div id="lab-canvas">
+        <div id="lab-world">
+          <svg id="wire-layer" width="4000" height="4000"></svg>
+        </div>
+        <div id="lab-hint">Arrastra componentes desde el panel izquierdo · Clic en un pin y luego en otro pin para tender un cable · Rueda del ratón: zoom · Arrastrar el fondo: mover la vista · Supr: eliminar seleccionado</div>
+      </div>
+
+      <!-- C. Propiedades, avisos e instrumentos/programación -->
+      <aside id="lab-side">
+        <div class="side-panel">
+          <h3>🧩 Componente seleccionado</h3>
+          <div id="props-body"><p class="muted">Selecciona un componente de la mesa para ver y editar sus propiedades (resistencia, voltaje, sliders de sensores…).</p></div>
+        </div>
+        <div class="side-panel">
+          <h3>⚠️ Avisos del circuito</h3>
+          <div id="lab-messages"><p class="muted">Sin avisos.</p></div>
+        </div>
+        <div class="side-panel editor-panel">
+          <div class="editor-head">
+            <h3>💻 Programación Arduino / ESP32</h3>
+            <button id="btn-run" type="button" class="btn accent sm">▶ Cargar y ejecutar</button>
+            <button id="btn-stop" type="button" class="btn sm">■ Detener</button>
+          </div>
+          <div class="editor-wrap">
+            <pre id="code-highlight" aria-hidden="true"></pre>
+            <textarea id="code-editor" spellcheck="false" aria-label="Editor de código Arduino"></textarea>
+          </div>
+          <div class="side-panel serial" style="border:none; padding:0; background:none;">
+            <h3>Monitor serial</h3>
+            <div id="serial-out"></div>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Prácticas guiadas -->
+    <div id="project-modal" class="hidden">
+      <div class="pm-box">
+        <button id="pm-close" type="button" aria-label="Cerrar">✕</button>
+        <div id="pm-content"></div>
+      </div>
+    </div>
+  </section>
 
   <!-- ============ VENTANA DE INFORMACIÓN DEL COMPONENTE ============ -->
   <div id="modal-overlay" class="hidden" role="dialog" aria-modal="true" aria-labelledby="m-name">
@@ -79,6 +167,11 @@
   </footer>
 
   <script src="js/data.js"></script>
+  <script src="js/lab/catalog.js"></script>
+  <script src="js/lab/engine.js"></script>
+  <script src="js/lab/mcu.js"></script>
+  <script src="js/lab/projects.js"></script>
+  <script src="js/lab/ui.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>
