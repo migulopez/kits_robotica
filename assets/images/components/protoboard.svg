@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240">
+  <defs>
+    <pattern id="holes" width="12" height="12" patternUnits="userSpaceOnUse">
+      <circle cx="6" cy="6" r="2.3" fill="#b9b9ad"/>
+    </pattern>
+  </defs>
+  <ellipse cx="120" cy="200" rx="100" ry="11" fill="rgba(0,0,0,.18)"/>
+  <g transform="rotate(-4 120 120)">
+    <rect x="36" y="62" width="168" height="112" rx="10" fill="#f5f5ef" stroke="#d8d8cc" stroke-width="2"/>
+    <rect x="36" y="113" width="168" height="9" fill="#e6e6da"/>
+    <rect x="44" y="70" width="152" height="5" fill="#ef4444" opacity=".85"/>
+    <rect x="44" y="162" width="152" height="5" fill="#3b82f6" opacity=".85"/>
+    <rect x="46" y="80" width="148" height="28" fill="url(#holes)"/>
+    <rect x="46" y="126" width="148" height="28" fill="url(#holes)"/>
+    <text x="42" y="77" font-family="Arial" font-size="9" font-weight="bold" fill="#ef4444">+</text>
+    <text x="42" y="170" font-family="Arial" font-size="9" font-weight="bold" fill="#3b82f6">−</text>
+    <text x="120" y="119" text-anchor="middle" font-family="Arial" font-size="8" fill="#a3a396">DIP</text>
+  </g>
+</svg>

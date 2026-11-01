@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240">
+  <ellipse cx="120" cy="208" rx="80" ry="10" fill="rgba(0,0,0,.18)"/>
+  <path d="M150 176 C 178 184, 192 198, 212 202" stroke="#b45309" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M152 172 C 184 176, 200 188, 220 190" stroke="#dc2626" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M152 168 C 186 166, 204 174, 224 176" stroke="#f59e0b" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <rect x="62" y="104" width="14" height="30" rx="4" fill="#1e40af"/>
+  <rect x="164" y="104" width="14" height="30" rx="4" fill="#1e40af"/>
+  <rect x="74" y="98" width="92" height="82" rx="12" fill="#2563eb"/>
+  <rect x="74" y="98" width="92" height="22" rx="11" fill="#3b82f6"/>
+  <rect x="88" y="130" width="64" height="36" rx="5" fill="#dbeafe"/>
+  <text x="120" y="145" text-anchor="middle" font-family="Arial" font-size="11" font-weight="bold" fill="#1e3a8a">SERVO</text>
+  <text x="120" y="159" text-anchor="middle" font-family="Arial" font-size="7" fill="#3b82f6">0°–180°</text>
+  <circle cx="120" cy="94" r="11" fill="#e5e7eb" stroke="#9ca3af" stroke-width="2"/>
+  <circle cx="120" cy="80" r="22" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+  <circle cx="120" cy="80" r="5" fill="#94a3b8"/>
+  <circle cx="120" cy="63" r="3" fill="#cbd5e1"/><circle cx="120" cy="97" r="3" fill="#cbd5e1"/>
+  <circle cx="103" cy="80" r="3" fill="#cbd5e1"/><circle cx="137" cy="80" r="3" fill="#cbd5e1"/>
+</svg>

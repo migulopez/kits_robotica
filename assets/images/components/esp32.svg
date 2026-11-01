@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240">
+  <ellipse cx="120" cy="214" rx="70" ry="9" fill="rgba(0,0,0,.18)"/>
+  <rect x="70" y="52" width="6" height="150" fill="#b8860b"/>
+  <rect x="164" y="52" width="6" height="150" fill="#b8860b"/>
+  <rect x="76" y="30" width="88" height="176" rx="9" fill="#111827"/>
+  <rect x="104" y="34" width="32" height="13" rx="4" fill="#c0c7d1" stroke="#8f98a5" stroke-width="2"/>
+  <rect x="84" y="56" width="72" height="72" rx="5" fill="#374151" stroke="#1f2937" stroke-width="2"/>
+  <path d="M92 116 L100 108 L108 116 L116 108 L124 116 L132 108 L140 116 L148 108" fill="none" stroke="#d4af37" stroke-width="2.5"/>
+  <text x="120" y="76" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#e5e7eb">ESP32</text>
+  <text x="120" y="92" text-anchor="middle" font-family="Arial" font-size="7" fill="#9ca3af">WiFi · BT</text>
+  <rect x="86" y="138" width="22" height="15" rx="2" fill="#000"/>
+  <text x="97" y="148" text-anchor="middle" font-family="Arial" font-size="6" fill="#9ca3af">CH340</text>
+  <rect x="120" y="138" width="26" height="15" rx="2" fill="#1f2937"/>
+  <rect x="78" y="162" width="16" height="9" rx="3" fill="#4b5563"/>
+  <rect x="146" y="162" width="16" height="9" rx="3" fill="#4b5563"/>
+  <text x="86" y="180" text-anchor="middle" font-family="Arial" font-size="6" fill="#9ca3af">EN</text>
+  <text x="154" y="180" text-anchor="middle" font-family="Arial" font-size="6" fill="#9ca3af">BOOT</text>
+  <text x="120" y="222" text-anchor="middle" font-family="Arial" font-size="9" font-weight="bold" fill="#9ca3af">ESP32 DEVKIT</text>
+</svg>

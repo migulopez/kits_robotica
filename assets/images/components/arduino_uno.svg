@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240">
+  <ellipse cx="120" cy="212" rx="86" ry="10" fill="rgba(0,0,0,.18)"/>
+  <rect x="56" y="42" width="128" height="160" rx="9" fill="#0f766e"/>
+  <rect x="56" y="42" width="128" height="160" rx="9" fill="rgba(255,255,255,.05)"/>
+  <rect x="62" y="48" width="36" height="28" rx="3" fill="#c0c7d1" stroke="#8f98a5" stroke-width="2"/>
+  <rect x="68" y="53" width="24" height="10" rx="2" fill="#8f98a5"/>
+  <circle cx="164" cy="64" r="15" fill="#111827"/>
+  <circle cx="164" cy="64" r="6" fill="#374151"/>
+  <rect x="104" y="46" width="76" height="9" rx="2" fill="#111827"/>
+  <rect x="62" y="186" width="116" height="9" rx="2" fill="#111827"/>
+  <rect x="50" y="88" width="8" height="88" rx="2" fill="#111827"/>
+  <rect x="182" y="88" width="8" height="88" rx="2" fill="#111827"/>
+  <rect x="102" y="98" width="42" height="30" rx="4" fill="#1f2937"/>
+  <text x="123" y="117" text-anchor="middle" font-family="Arial" font-size="8" fill="#e5e7eb">ATmega328P</text>
+  <rect x="76" y="140" width="22" height="11" rx="2" fill="#c0c7d1"/>
+  <rect x="150" y="100" width="22" height="14" rx="2" fill="#111827"/>
+  <circle cx="170" cy="96" r="6" fill="#e5e7eb" stroke="#9ca3af" stroke-width="1.5"/>
+  <text x="120" y="176" text-anchor="middle" font-family="Arial" font-size="20" font-weight="bold" fill="#f8fafc">UNO</text>
+  <text x="120" y="34" text-anchor="middle" font-family="Arial" font-size="9" font-weight="bold" fill="#5eead4">ARDUINO</text>
+</svg>

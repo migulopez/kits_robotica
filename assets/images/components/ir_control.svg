@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240">
+  <ellipse cx="120" cy="212" rx="92" ry="10" fill="rgba(0,0,0,.18)"/>
+  <g fill="none" stroke="#a78bfa" stroke-width="3" stroke-linecap="round" opacity=".9">
+    <path d="M128 46 q10 -12 20 0"/><path d="M136 36 q12 -15 24 0"/><path d="M144 26 q14 -18 28 0"/>
+  </g>
+  <rect x="34" y="58" width="72" height="126" rx="14" fill="#111827"/>
+  <circle cx="70" cy="74" r="7" fill="#4c1d95"/>
+  <circle cx="70" cy="74" r="4" fill="#8b5cf6"/>
+  <g fill="#374151">
+    <circle cx="52" cy="98" r="6"/><circle cx="70" cy="98" r="6"/><circle cx="88" cy="98" r="6"/>
+    <circle cx="52" cy="118" r="6"/><circle cx="70" cy="118" r="6"/><circle cx="88" cy="118" r="6"/>
+    <circle cx="52" cy="138" r="6"/><circle cx="70" cy="138" r="6"/><circle cx="88" cy="138" r="6"/>
+    <circle cx="52" cy="158" r="6"/><circle cx="88" cy="158" r="6"/>
+  </g>
+  <circle cx="70" cy="158" r="7" fill="#ef4444"/>
+  <rect x="150" y="128" width="62" height="42" rx="8" fill="#1d4ed8"/>
+  <path d="M166 128 a15 15 0 0 1 30 0 Z" fill="#111827"/>
+  <rect x="162" y="170" width="7" height="22" fill="#d4af37"/>
+  <rect x="178" y="170" width="7" height="22" fill="#d4af37"/>
+  <rect x="194" y="170" width="7" height="22" fill="#d4af37"/>
+  <text x="181" y="122" text-anchor="middle" font-family="Arial" font-size="9" font-weight="bold" fill="#bfdbfe">IR RX</text>
+</svg>

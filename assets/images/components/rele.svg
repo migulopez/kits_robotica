@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240">
+  <ellipse cx="120" cy="206" rx="94" ry="10" fill="rgba(0,0,0,.18)"/>
+  <rect x="72" y="172" width="8" height="28" fill="#d4af37"/>
+  <rect x="104" y="172" width="8" height="28" fill="#d4af37"/>
+  <rect x="136" y="172" width="8" height="28" fill="#d4af37"/>
+  <rect x="46" y="76" width="148" height="98" rx="10" fill="#1d4ed8"/>
+  <rect x="60" y="90" width="66" height="56" rx="7" fill="#3b82f6" stroke="#1e40af" stroke-width="3"/>
+  <rect x="68" y="102" width="50" height="16" rx="3" fill="#dbeafe"/>
+  <text x="93" y="113" text-anchor="middle" font-family="Arial" font-size="8" font-weight="bold" fill="#1e3a8a">SRD-05VDC</text>
+  <rect x="136" y="90" width="46" height="56" rx="5" fill="#16a34a"/>
+  <g fill="#0b1120"><circle cx="159" cy="100" r="3.4"/><circle cx="159" cy="118" r="3.4"/><circle cx="159" cy="136" r="3.4"/></g>
+  <rect x="60" y="152" width="24" height="14" rx="2" fill="#0b1120"/>
+  <circle cx="100" cy="159" r="5" fill="#22c55e"/>
+  <circle cx="116" cy="159" r="5" fill="#ef4444"/>
+  <text x="120" y="70" text-anchor="middle" font-family="Arial" font-size="9" font-weight="bold" fill="#bfdbfe">RELÉ 1 CANAL</text>
+</svg>

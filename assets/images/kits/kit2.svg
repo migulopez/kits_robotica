@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 220">
+  <defs>
+    <linearGradient id="k2f" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#38bdf8"/><stop offset="1" stop-color="#0369a1"/>
+    </linearGradient>
+    <linearGradient id="k2t" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#bae6fd"/><stop offset="1" stop-color="#0ea5e9"/>
+    </linearGradient>
+  </defs>
+  <ellipse cx="130" cy="206" rx="102" ry="11" fill="rgba(0,0,0,.28)"/>
+  <polygon points="30,62 62,32 232,32 200,62" fill="url(#k2t)"/>
+  <polygon points="200,62 232,32 232,162 200,192" fill="#0c4a6e"/>
+  <rect x="30" y="62" width="170" height="130" rx="8" fill="url(#k2f)"/>
+  <rect x="30" y="62" width="170" height="24" rx="8" fill="rgba(255,255,255,.25)"/>
+  <rect x="48" y="98" width="134" height="82" rx="8" fill="#f0f9ff"/>
+  <text x="115" y="130" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#075985">KIT 2</text>
+  <text x="115" y="146" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#0c4a6e">ROBOTS MÓVILES</text>
+  <g>
+    <rect x="92" y="158" width="46" height="14" rx="5" fill="#0c4a6e"/>
+    <circle cx="102" cy="174" r="6" fill="#082f49"/><circle cx="128" cy="174" r="6" fill="#082f49"/>
+    <circle cx="102" cy="174" r="2.4" fill="#bae6fd"/><circle cx="128" cy="174" r="2.4" fill="#bae6fd"/>
+    <rect x="112" y="152" width="16" height="8" rx="2" fill="#0284c7"/>
+  </g>
+</svg>

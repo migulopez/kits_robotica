@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Laboratorio Virtual de Robótica Educativa</title>
+  <meta name="description" content="Plataforma interactiva para explorar los kits de robótica educativa: selecciona un kit, abre su caja y explora cada componente con su ficha técnica." />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <header class="app-header">
+    <h1>🤖 Laboratorio Virtual de Robótica Educativa</h1>
+    <p class="subtitle">Explora los kits sobre la mesa de trabajo, ábrelos y manipula cada componente electrónico</p>
+  </header>
+
+  <main id="app">
+
+    <!-- ============ VISTA INICIAL: MESA CON LAS 3 CAJAS ============ -->
+    <section id="home-view" class="view">
+      <p class="hint">👆 Haz clic sobre una de las cajas para abrir el kit y explorar sus componentes</p>
+      <div class="workbench">
+        <div id="kit-shelf" aria-label="Cajas de los kits disponibles"></div>
+      </div>
+    </section>
+
+    <!-- ============ VISTA DEL KIT SELECCIONADO ============ -->
+    <section id="kit-view" class="view hidden">
+      <div class="kit-toolbar">
+        <button id="back-btn" type="button" aria-label="Volver a la mesa de trabajo">⬅ Volver a la mesa</button>
+        <div class="kit-heading">
+          <h2 id="kit-title"></h2>
+          <p id="kit-desc"></p>
+        </div>
+      </div>
+      <p class="hint">👆 Haz clic sobre cualquier componente para ver su ficha técnica ampliada</p>
+      <div class="workbench">
+        <div id="components-grid" aria-label="Componentes del kit"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============ VENTANA DE INFORMACIÓN DEL COMPONENTE ============ -->
+  <div id="modal-overlay" class="hidden" role="dialog" aria-modal="true" aria-labelledby="m-name">
+    <div id="modal">
+      <button id="modal-close" type="button" aria-label="Cerrar información del componente">✕</button>
+      <div class="modal-image">
+        <img id="m-img" src="" alt="" />
+        <h3 id="m-name"></h3>
+      </div>
+      <div class="modal-info">
+        <section>
+          <h4>🔍 ¿Qué es?</h4>
+          <p id="m-queEs"></p>
+        </section>
+        <section>
+          <h4>🎯 ¿Para qué sirve?</h4>
+          <p id="m-paraQue"></p>
+        </section>
+        <section>
+          <h4>⚙️ ¿Cómo funciona?</h4>
+          <p id="m-funciona"></p>
+        </section>
+        <section>
+          <h4>🛠️ ¿Cómo se utiliza?</h4>
+          <p id="m-utiliza"></p>
+        </section>
+        <section>
+          <h4>🚀 Ejemplos de aplicación en proyectos de robótica</h4>
+          <ul id="m-ejemplos"></ul>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <footer class="app-footer">
+    <p>Plataforma interactiva de kits de robótica educativa · HTML5 + CSS3 + JavaScript</p>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
