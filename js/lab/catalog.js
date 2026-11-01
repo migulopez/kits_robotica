@@ -78,8 +78,8 @@
     /* ---------- Pasivos ---------- */
     resistencia: {
       name: "Resistencia", cat: "pasivos", kits: [1, 3],
-      img: "assets/images/components/resistencias.svg",
-      pins: [P("a", "Terminal A", 56, 140), P("b", "Terminal B", 184, 140)],
+      img: "assets/images/components/resistencia_unica.svg",
+      pins: [P("a", "Terminal A", 14, 120), P("b", "Terminal B", 226, 120)],
       props: { R: 220 }
     },
     potenciometro: {
@@ -93,9 +93,9 @@
     /* ---------- Indicadores ---------- */
     led: {
       name: "LED", cat: "indicadores", kits: [1],
-      img: "assets/images/components/leds.svg",
-      pins: [P("anodo", "Ánodo (+)", 106, 204, { vcc: true }), P("catodo", "Cátodo (−)", 132, 192, { gnd: true })],
-      glow: { x: 120, y: 125, r: 38 }
+      img: "assets/images/components/led_unico.svg",
+      pins: [P("anodo", "Ánodo (+)", 105, 214, { vcc: true }), P("catodo", "Cátodo (−)", 135, 198, { gnd: true })],
+      glow: { x: 120, y: 118, r: 42 }
     },
     buzzer: {
       name: "Buzzer", cat: "indicadores", kits: [3],

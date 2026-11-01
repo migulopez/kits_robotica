@@ -427,3 +427,15 @@
 /* ajustes menores de overlays */
 .lcd-l0, .lcd-l1 { display: block; height: 1.5em; overflow: hidden; }
 .rbtn { min-width: 36px; }
+
+/* ---------- evitar el resaltado azul al arrastrar cables sobre componentes ---------- */
+#lab-canvas, #lab-world, .lab-comp, .pin, #lab-palette, .pm-box, .lab-toolbar {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+#lab-canvas img, .lab-comp img, .pal-item img, .pm-world image {
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
