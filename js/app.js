@@ -159,6 +159,33 @@
     }, 260);
   }
 
+  // ---------- Laboratorio virtual ----------
+  var labView = document.getElementById("lab-view");
+
+  function openLab() {
+    closeModal();
+    homeView.classList.add("hidden");
+    kitView.classList.add("hidden");
+    labView.classList.remove("hidden");
+    if (window.LabUI) window.LabUI.openView();
+    window.scrollTo({ top: 0 });
+  }
+
+  function closeLab() {
+    if (window.LabUI) window.LabUI.closeView();
+    labView.classList.add("hidden");
+    homeView.classList.remove("hidden");
+    currentKit = null;
+    Array.prototype.forEach.call(shelf.children, function (el) {
+      el.classList.remove("opening", "vanish");
+    });
+    window.scrollTo({ top: 0 });
+  }
+
+  document.getElementById("lab-btn").addEventListener("click", openLab);
+  document.getElementById("home-lab-btn").addEventListener("click", openLab);
+  document.getElementById("lab-back-btn").addEventListener("click", closeLab);
+
   // ---------- Eventos ----------
   backBtn.addEventListener("click", backToHome);
   modalClose.addEventListener("click", closeModal);

@@ -38,14 +38,23 @@ uno por uno con su ficha técnica y educativa ampliada.
 kits_robotica/
 ├── index.html                  # Estructura principal de la aplicación
 ├── css/
-│   └── styles.css              # Estilos, animaciones y diseño responsivo
+│   ├── styles.css              # Estilos de la exploración de kits
+│   └── lab.css                 # Estilos del laboratorio virtual
 ├── js/
 │   ├── data.js                 # Datos estructurados de kits y componentes
-│   └── app.js                  # Lógica de interacción (vistas, modal, animaciones)
+│   ├── app.js                  # Lógica de interacción (vistas, modal, animaciones)
+│   └── lab/                    # Módulo del laboratorio virtual
+│       ├── catalog.js          # Catálogo de componentes colocables y sus pines
+│       ├── engine.js           # Motor de simulación eléctrica (MNA) + validación
+│       ├── mcu.js              # Intérprete controlado de Arduino/ESP32
+│       ├── projects.js         # 6 prácticas guiadas (diagramas, pasos, código)
+│       └── ui.js               # Mesa interactiva, cables, instrumentos, editor
+├── tests/
+│   └── engine.test.js          # Pruebas del motor de simulación (node)
 ├── assets/
 │   └── images/
 │       ├── kits/               # Ilustraciones de las 3 cajas (kit1/2/3.svg)
-│       └── components/         # Ilustraciones SVG de los 27 componentes
+│       └── components/         # Ilustraciones SVG de los componentes (30)
 └── README.md
 ```
 
@@ -73,9 +82,88 @@ Toda la información está en `js/data.js` de forma estructurada:
 - **Agregar un kit**: añadir un objeto a `KITS` con su caja en `assets/images/kits/` y su
   lista de componentes; la interfaz se genera automáticamente.
 
+## ⚡ Laboratorio virtual de electrónica (nuevo módulo)
+
+Junto al botón **«⬅ Volver a la mesa»** (y en la pantalla inicial) aparece el botón
+**«⚡ Laboratorio virtual»**, que abre una mesa de electrónica interactiva con la misma
+identidad visual:
+
+### Áreas de la mesa
+- **Panel lateral de componentes**: organizados por categorías (alimentación, pasivos,
+  indicadores, controladores, sensores, actuadores, módulos, visualización, instrumentos)
+  y filtrable por **Kit 1 / Kit 2 / Kit 3** según de qué kit proviene cada componente.
+- **Zona central de simulación**: arrastrar y soltar componentes, moverlos, rotarlos (⟳),
+  zoom con la rueda del ratón, paneo arrastrando el fondo, cables de colores entre pines
+  (clic en un pin → clic en otro), eliminar componentes (Supr) y cables (clic derecho o Supr),
+  interruptor general de alimentación (⏻), reinicio (↺) y limpieza de mesa (🗑).
+- **Panel derecho**: propiedades del componente seleccionado (valor de resistencias,
+  voltaje de la fuente, posición del potenciómetro — también girando su perilla en la mesa,
+  sliders de sensores: distancia del ultrasónico, temperatura/humedad del DHT11, luz del
+  LDR, presencia del HC-SR501, obstáculos IR, aplausos, botones del control remoto…),
+  **avisos inteligentes del circuito** y el **editor de código** con resaltado de sintaxis,
+  botón «▶ Cargar y ejecutar» y monitor serial.
+
+### Instrumentos virtuales
+- **Fuente de alimentación regulable** (0–12 V, con interruptor) colocable en la mesa;
+  también pila de 9 V y adaptador de 12 V. Terminales + y − cableables.
+- **Multímetro digital** colocable: modo **V DC** (puntas en paralelo), **A DC** (en serie,
+  midiendo la corriente real que atraviesa el shunt) y **Ω** (midiendo resistencias con el
+  circuito sin alimentación; muestra «OL» si está energizado). Puntas COM (negra) y VΩ/A (roja).
+
+### Motor de simulación (resultados coherentes con la realidad)
+- Grafo de nodos con **análisis nodal modificado (MNA)**: V = I × R, divisores de tensión,
+  leyes de Kirchhoff, cálculo de voltaje/corriente/potencia por componente.
+- **LED**: respeta polaridad (ánodo/cátodo), brillo proporcional a la corriente real,
+  se quema si supera ~30 mA sin resistencia limitadora (aviso + daño permanente),
+  aviso si está invertido.
+- **Resistencia**: valor configurable; muestra V, I y P disipada (avisa si supera 0,25 W).
+- **Potenciómetro**: divisor de tensión real; se ajusta girando la perilla o con el slider.
+- **Buzzer**: suena de verdad (WebAudio) con la frecuencia de `tone()` o fija en DC.
+- **Motor DC / motorreductor**: gira a velocidad proporcional al voltaje (PWM incluido) y
+  cambia de sentido con la polaridad; **driver L298N / shield L293D** controlan OUT/M con
+  señales digitales y PWM del microcontrolador.
+- **Servomotor**: ángulo según `Servo.write()` o señal PWM (0–180°).
+- **Relé**: bobina real; conmuta COM entre NC y NO según la señal IN.
+- **Sensores con valores simulados ajustables**: HC-SR04 (distancia → `pulseIn`), DHT11,
+  LDR (AO analógico), HC-SR501, sensor de línea IR, sensor IR de obstáculos, módulo de
+  aplausos y receptor IR con control remoto.
+- **LCD 16x2**: se enciende solo si VDD/VSS están alimentados y muestra el texto que
+  imprime el programa (`LiquidCrystal.print`) si RS, E y D4–D7 están bien cableados.
+- **Arduino UNO / ESP32**: pines etiquetados (D0–D13 con ~PWM, A0–A5, 5V/3V3, GND, VIN;
+  GPIO en el ESP32 a 3,3 V). Se alimentan por USB, VIN o 5V. El **intérprete controlado**
+  ejecuta el código del editor (`pinMode`, `digitalWrite/Read`, `analogWrite/Read`,
+  `tone`, `pulseIn`, `delay`, `millis`, `Serial`, `Servo`, `LiquidCrystal`, `DHT`,
+  `IRrecv`) contra los nodos reales del circuito: el programa solo funciona si el
+  cableado es correcto.
+
+### Validación inteligente de errores
+El sistema detecta y explica: cortocircuitos, polaridad invertida del LED, LED sin
+resistencia limitadora (riesgo de daño), falta de alimentación, LCD sin alimentación o
+sin pines de datos, pines del microcontrolador sin conectar y pines que exceden 40 mA.
+Ejemplo: *«El LED no enciende porque está conectado con polaridad invertida. Intercambia
+las conexiones del ánodo y el cátodo.»*
+
+### 📚 Prácticas guiadas (6 proyectos)
+1. LED + resistencia de 220 Ω (Ley de Ohm y medición con multímetro).
+2. Brillo de LED con potenciómetro (analogRead + PWM).
+3. LCD 16x2 mostrando «HOLA MUNDO».
+4. LCD con el valor del potenciómetro en vivo.
+5. Tono del buzzer controlado por potenciómetro (`tone`).
+6. HC-SR04 + servomotor (radar según distancia).
+
+Cada práctica incluye objetivo, lista de componentes, **diagrama de conexiones**, pasos,
+explicación, código de ejemplo y botones para colocar los componentes en la mesa
+(**sin conectarlos automáticamente**: el estudiante tiende los cables) y cargar el código.
+
+### Pruebas del motor
+```bash
+node tests/engine.test.js   # 34 comprobaciones del simulador (MNA, LED, divisores, MCU…)
+```
+
 ## 🛠️ Tecnologías
 
 - HTML5 semántico
-- CSS3 (gradientes, animaciones `@keyframes`, flexbox, media queries)
-- JavaScript vanilla (sin frameworks): renderizado dinámico, estados de vista y modal
+- CSS3 (gradientes, animaciones `@keyframes`, flexbox/grid, media queries)
+- JavaScript vanilla (sin frameworks): renderizado dinámico, estados de vista, modal y
+  motor de simulación eléctrica propio (MNA) + intérprete Arduino
 - SVG para todas las ilustraciones de componentes y cajas
