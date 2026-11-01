@@ -54,7 +54,8 @@ kits_robotica/
 ├── assets/
 │   └── images/
 │       ├── kits/               # Ilustraciones de las 3 cajas (kit1/2/3.svg)
-│       └── components/         # Ilustraciones SVG de los componentes (30)
+│       └── components/         # Ilustraciones SVG de los componentes (32: incluye LED y
+│                               #   resistencia unitarios para el laboratorio virtual)
 └── README.md
 ```
 

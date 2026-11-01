@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240">
+  <ellipse cx="120" cy="160" rx="100" ry="9" fill="rgba(0,0,0,.18)"/>
+  <line x1="14" y1="120" x2="70" y2="120" stroke="#c7ced8" stroke-width="6" stroke-linecap="round"/>
+  <line x1="170" y1="120" x2="226" y2="120" stroke="#c7ced8" stroke-width="6" stroke-linecap="round"/>
+  <rect x="68" y="102" width="104" height="36" rx="18" fill="#d9a066" stroke="#b57e46" stroke-width="2.5"/>
+  <rect x="82" y="102" width="10" height="36" fill="#5b3a1e"/>
+  <rect x="96" y="102" width="10" height="36" fill="#1c1c1c"/>
+  <rect x="110" y="102" width="10" height="36" fill="#c0392b"/>
+  <rect x="148" y="102" width="10" height="36" fill="#d4af37"/>
+  <rect x="72" y="108" width="96" height="7" rx="3.5" fill="rgba(255,255,255,.35)"/>
+  <text x="120" y="170" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#e8eef7">220 Ω</text>
+</svg>

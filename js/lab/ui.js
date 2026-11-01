@@ -423,6 +423,7 @@
   function bindCanvas() {
     const canvas = $("#lab-canvas");
     canvas.addEventListener("pointerdown", (e) => {
+      e.preventDefault(); // evita que el navegador seleccione texto/imagenes al arrastrar (resaltado azul)
       const pinEl = e.target.closest(".pin");
       if (pinEl) {
         e.stopPropagation();
@@ -460,7 +461,7 @@
       // clic en cable ya existe (sobre path) se maneja en el path; aquí: pan
       select(null);
       LabUI.panning = { x: e.clientX, y: e.clientY, pan: { ...LabUI.pan } };
-      canvas.setPointerCapture(e.pointerId);
+      try { canvas.setPointerCapture(e.pointerId); } catch (err) { /* no soportado */ }
     });
 
     window.addEventListener("pointermove", (e) => {
@@ -747,6 +748,8 @@
     if (this.inited) return;
     this.inited = true;
     this.engine = new Circuit();
+    // selección de texto desactivada mientras el laboratorio esté abierto
+    document.addEventListener("selectstart", (e) => { if (LabUI.open) e.preventDefault(); });
     buildPalette();
     bindCanvas();
     bindToolbar();
