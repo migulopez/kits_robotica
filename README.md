@@ -30,7 +30,7 @@ uno por uno con su ficha técnica y educativa ampliada.
 |-----|---------|-------------|
 | **KIT 1** | Electrónica básica y actuadores | Resistencias, LEDs, potenciómetros, protoboard, cables jumper, motores DC, joystick, motorreductor, servomotor, sensor ultrasónico, sensor de aplausos LM393, finales de carrera, driver L298N, sensor de línea, Arduino UNO con cable USB (15) |
 | **KIT 2** | Construcción y programación de robots móviles | Kit de armado Elegoo (chasis + motores amarillos), sensor ultrasónico, sensor de línea IR, servomotor azul, protoboard, pinzas pelacables, adaptador de corriente, sensor IR con control, shield L293D, Arduino UNO, cables jumper (11) |
-| **KIT 3** | Automatización y sistemas inteligentes | Sensor ultrasónico, módulo de aplausos, resistencias, cables jumper, protoboard, buzzer, módulo relé 1 canal, LCD 16x2, HC-SR501, módulo LDR, servomotor, ESP32 DevKit CH340, DHT11 (13) |
+| **KIT 3** | Automatización y sistemas inteligentes | Sensor ultrasónico, módulo de aplausos, resistencias, cables jumper, protoboard, buzzer, módulo relé 1 canal, LCD 16x2 con módulo I2C, HC-SR501, módulo LDR, servomotor, ESP32 DevKit CH340, DHT11 (13) |
 
 ## 🗂️ Estructura del proyecto
 
@@ -47,14 +47,14 @@ kits_robotica/
 │       ├── catalog.js          # Catálogo de componentes colocables y sus pines
 │       ├── engine.js           # Motor de simulación eléctrica (MNA) + validación
 │       ├── mcu.js              # Intérprete controlado de Arduino/ESP32
-│       ├── projects.js         # 6 prácticas guiadas (diagramas, pasos, código)
+│       ├── projects.js         # 11 prácticas guiadas (diagramas, pasos, código)
 │       └── ui.js               # Mesa interactiva, cables, instrumentos, editor
 ├── tests/
 │   └── engine.test.js          # Pruebas del motor de simulación (node)
 ├── assets/
 │   └── images/
 │       ├── kits/               # Ilustraciones de las 3 cajas (kit1/2/3.svg)
-│       └── components/         # Ilustraciones SVG de los componentes (32: incluye LED y
+│       └── components/         # Ilustraciones SVG de los componentes (33: incluye LED y
 │                               #   resistencia unitarios para el laboratorio virtual)
 └── README.md
 ```
@@ -128,14 +128,16 @@ identidad visual:
 - **Sensores con valores simulados ajustables**: HC-SR04 (distancia → `pulseIn`), DHT11,
   LDR (AO analógico), HC-SR501, sensor de línea IR, sensor IR de obstáculos, módulo de
   aplausos y receptor IR con control remoto.
-- **LCD 16x2**: se enciende solo si VDD/VSS están alimentados y muestra el texto que
-  imprime el programa (`LiquidCrystal.print`) si RS, E y D4–D7 están bien cableados.
+- **LCD 16x2 con módulo I2C** (backpack PCF8574, dirección 0x27): solo 4 pines
+  (VCC, GND, SDA, SCL). Se enciende si VCC/GND reciben alimentación y muestra el texto
+  que imprime el programa (`LiquidCrystal_I2C.print`) si SDA/SCL llegan a los pines I2C
+  del microcontrolador (UNO: A4/A5; ESP32: D21/D22).
 - **Arduino UNO / ESP32**: pines etiquetados (D0–D13 con ~PWM, A0–A5, 5V/3V3, GND, VIN;
   GPIO en el ESP32 a 3,3 V). Se alimentan por USB, VIN o 5V. El **intérprete controlado**
   ejecuta el código del editor (`pinMode`, `digitalWrite/Read`, `analogWrite/Read`,
-  `tone`, `pulseIn`, `delay`, `millis`, `Serial`, `Servo`, `LiquidCrystal`, `DHT`,
-  `IRrecv`) contra los nodos reales del circuito: el programa solo funciona si el
-  cableado es correcto.
+  `tone`, `pulseIn`, `delay`, `millis`, `Serial`, `Servo`, `LiquidCrystal`,
+  `LiquidCrystal_I2C`, `DHT`, `IRrecv`) contra los nodos reales del circuito: el programa
+  solo funciona si el cableado es correcto.
 
 ### Validación inteligente de errores
 El sistema detecta y explica: cortocircuitos, polaridad invertida del LED, LED sin
@@ -144,17 +146,24 @@ sin pines de datos, pines del microcontrolador sin conectar y pines que exceden 
 Ejemplo: *«El LED no enciende porque está conectado con polaridad invertida. Intercambia
 las conexiones del ánodo y el cátodo.»*
 
-### 📚 Prácticas guiadas (6 proyectos)
+### 📚 Prácticas guiadas (11 proyectos)
 1. LED + resistencia de 220 Ω (Ley de Ohm y medición con multímetro).
 2. Brillo de LED con potenciómetro (analogRead + PWM).
-3. LCD 16x2 mostrando «HOLA MUNDO».
-4. LCD con el valor del potenciómetro en vivo.
+3. LCD 16x2 (I2C) mostrando «HOLA MUNDO».
+4. LCD (I2C) con el valor del potenciómetro en vivo.
 5. Tono del buzzer controlado por potenciómetro (`tone`).
 6. HC-SR04 + servomotor (radar según distancia).
+7. Estación climática: DHT11 + LCD I2C en ESP32.
+8. Relé que enciende una lámpara (LED de potencia).
+9. Servomotor controlado con potenciómetro.
+10. Alarma de proximidad: HC-SR04 + buzzer.
+11. Luz automática nocturna con LDR.
 
-Cada práctica incluye objetivo, lista de componentes, **diagrama de conexiones**, pasos,
-explicación, código de ejemplo y botones para colocar los componentes en la mesa
-(**sin conectarlos automáticamente**: el estudiante tiende los cables) y cargar el código.
+Cada práctica incluye objetivo, lista de componentes **con la etiqueta del kit al que
+pertenecen** (`Kit 1`, `Kit 2`, `Kit 3`, también visible en cada componente de la paleta),
+**diagrama de conexiones**, pasos, explicación, código de ejemplo y botones para colocar
+los componentes en la mesa (**sin conectarlos automáticamente**: el estudiante tiende los
+cables) y cargar el código.
 
 ### Pruebas del motor
 ```bash

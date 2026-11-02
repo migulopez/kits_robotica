@@ -112,43 +112,37 @@ void loop() {
     {
       id: "p3",
       n: 3,
-      title: "Pantalla LCD 16x2 mostrando «HOLA MUNDO»",
-      objective: "Conectar una pantalla LCD 16x2 en modo 4 bits y mostrar un texto con la librería LiquidCrystal.",
+      title: "Pantalla LCD 16x2 (I2C) mostrando «HOLA MUNDO»",
+      objective: "Conectar la pantalla LCD 16x2 con su módulo I2C usando solo 4 cables (VCC, GND, SDA, SCL) y mostrar un texto con la librería LiquidCrystal_I2C.",
       comps: [
         { type: "arduino", x: 60, y: 30 },
         { type: "lcd", x: 470, y: 150 }
       ],
       wires: [
-        [0, "5V", 1, "VDD"],
-        [0, "GND", 1, "VSS"],
-        [0, "GND", 1, "VO"],
-        [0, "D12", 1, "RS"],
-        [0, "GND", 1, "RW"],
-        [0, "D11", 1, "E"],
-        [0, "D5", 1, "D4"],
-        [0, "D4", 1, "D5"],
-        [0, "D3", 1, "D6"],
-        [0, "D2", 1, "D7"],
-        [0, "5V", 1, "A"],
-        [0, "GND", 1, "K"]
+        [0, "5V", 1, "vcc"],
+        [0, "GND", 1, "gnd"],
+        [0, "A4", 1, "sda"],
+        [0, "A5", 1, "scl"]
       ],
       steps: [
-        "Coloca el Arduino UNO y la pantalla LCD 16x2.",
-        "Alimenta la LCD: VDD → 5V, VSS → GND, y VO → GND (contraste al máximo).",
-        "Conecta RS → D12, RW → GND y E → D11.",
-        "Conecta los datos en modo 4 bits: D4→D5, D5→D4, D6→D3, D7→D2 del Arduino.",
-        "Retroiluminación: A → 5V y K → GND.",
-        "Carga el código y ejecuta: la pantalla debe mostrar «HOLA MUNDO».",
-        "Experimento: desconecta VDD. El sistema avisa que la LCD no recibe alimentación."
+        "Coloca el Arduino UNO y la pantalla LCD 16x2 con módulo I2C (los 4 pines de arriba: VCC, GND, SDA, SCL).",
+        "Alimenta la pantalla: VCC → 5V y GND → GND del Arduino (cables rojo y negro).",
+        "Conecta el bus I2C: SDA → A4 y SCL → A5 (en el UNO, A4/A5 son los pines I2C).",
+        "Carga el código de ejemplo con «▶ Cargar y ejecutar».",
+        "La pantalla debe mostrar «HOLA MUNDO».",
+        "Experimento: desconecta VCC. El sistema avisa que la LCD no recibe alimentación.",
+        "Experimento: desconecta SDA. El aviso indica que faltan SDA/SCL hacia el microcontrolador."
       ],
       explanation:
-        "La LCD 16x2 muestra 2 filas de 16 caracteres. En modo 4 bits solo se usan D4–D7 además de RS (registro), RW (lectura/escritura) y E (enable). " +
-        "La simulación comprueba que VDD/VSS estén alimentados y que RS, E y D4–D7 estén cableados al Arduino; solo entonces lcd.print() dibuja el texto en la pantalla virtual.",
+        "La LCD 16x2 del kit trae soldado el módulo I2C (PCF8574, dirección habitual 0x27): traduce el bus serie I2C a las señales del controlador HD44780, " +
+        "así que solo ocupa 2 pines de datos (SDA/SCL) además de la alimentación. La simulación comprueba que VCC/GND estén alimentados y que SDA/SCL " +
+        "lleguen a los pines I2C del Arduino (A4/A5); solo entonces lcd.print() dibuja el texto en la pantalla virtual.",
       code:
-`// Proyecto 3: HOLA MUNDO en LCD 16x2 (modo 4 bits)
-#include <LiquidCrystal.h>  // (simulada)
+`// Proyecto 3: HOLA MUNDO en LCD 16x2 con módulo I2C
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>   // (simulada)
 
-LiquidCrystal lcd(12, 11, 5, 4, 3, 2);  // RS, E, D4, D5, D6, D7
+LiquidCrystal_I2C lcd(0x27, 16, 2);  // dirección I2C, 16 columnas, 2 filas
 
 void setup() {
   lcd.begin(16, 2);
@@ -163,22 +157,20 @@ void loop() {
     {
       id: "p4",
       n: 4,
-      title: "LCD mostrando el valor del potenciómetro en vivo",
-      objective: "Leer un potenciómetro con analogRead y mostrar su valor (0–1023) en tiempo real en la LCD.",
+      title: "LCD (I2C) mostrando el valor del potenciómetro en vivo",
+      objective: "Leer un potenciómetro con analogRead y mostrar su valor (0–1023) en tiempo real en la LCD con módulo I2C.",
       comps: [
         { type: "arduino", x: 60, y: 30 },
         { type: "lcd", x: 500, y: 30 },
         { type: "potenciometro", x: 60, y: 330 }
       ],
       wires: [
-        [0, "5V", 1, "VDD"], [0, "GND", 1, "VSS"], [0, "GND", 1, "VO"],
-        [0, "D12", 1, "RS"], [0, "GND", 1, "RW"], [0, "D11", 1, "E"],
-        [0, "D5", 1, "D4"], [0, "D4", 1, "D5"], [0, "D3", 1, "D6"], [0, "D2", 1, "D7"],
-        [0, "5V", 1, "A"], [0, "GND", 1, "K"],
+        [0, "5V", 1, "vcc"], [0, "GND", 1, "gnd"],
+        [0, "A4", 1, "sda"], [0, "A5", 1, "scl"],
         [0, "5V", 2, "a"], [0, "GND", 2, "b"], [2, "w", 0, "A0"]
       ],
       steps: [
-        "Monta la LCD como en el proyecto 3 (alimentación + RS, E, D4–D7).",
+        "Monta la LCD con módulo I2C: VCC → 5V, GND → GND, SDA → A4, SCL → A5.",
         "Añade el potenciómetro: A → 5V, B → GND, cursor W → A0.",
         "Carga y ejecuta el código.",
         "Gira el potenciómetro: la LCD debe mostrar «VALOR: xxx» cambiando en vivo entre 0 y 1023."
@@ -187,10 +179,11 @@ void loop() {
         "El potenciómetro como divisor de tensión entrega en W un voltaje proporcional a su posición. analogRead(A0) lo mide (0–1023). " +
         "El programa imprime ese valor en la segunda fila de la LCD; al girar el mando, el valor cambia dinámicamente en la pantalla simulada.",
       code:
-`// Proyecto 4: valor del potenciómetro en la LCD
-#include <LiquidCrystal.h>
+`// Proyecto 4: valor del potenciómetro en la LCD (I2C)
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
 
-LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+LiquidCrystal_I2C lcd(0x27, 16, 2);
 int potenciometro = A0;
 
 void setup() {
@@ -318,6 +311,288 @@ void loop() {
   Serial.print(distancia);
   Serial.println(" cm");
   delay(150);
+}`
+    },
+
+    {
+      id: "p7",
+      n: 7,
+      title: "Estación climática: DHT11 + LCD I2C en ESP32",
+      objective: "Leer temperatura y humedad con el DHT11 y mostrarlas en la pantalla LCD 16x2 con módulo I2C, todo con un ESP32.",
+      comps: [
+        { type: "esp32", x: 50, y: 40 },
+        { type: "dht11", x: 420, y: 40, props: { temp: 27, humedad: 55 } },
+        { type: "lcd", x: 660, y: 60 }
+      ],
+      wires: [
+        [0, "3V3", 1, "vcc"],
+        [0, "GND", 1, "gnd"],
+        [0, "D4", 1, "data"],
+        [0, "5V", 2, "vcc"],
+        [0, "GND", 2, "gnd"],
+        [0, "D21", 2, "sda"],
+        [0, "D22", 2, "scl"]
+      ],
+      steps: [
+        "Coloca el ESP32, el sensor DHT11 y la LCD 16x2 con módulo I2C.",
+        "Alimenta el DHT11: VCC → 3V3, GND → GND y DATA → D4.",
+        "Conecta la LCD: VCC → 5V, GND → GND, SDA → D21 y SCL → D22 (pines I2C del ESP32).",
+        "Carga y ejecuta el código.",
+        "La LCD muestra «T: xxC» y «H: xx%». Cambia la temperatura/humedad en el panel de propiedades del DHT11 y obsévalo en vivo.",
+        "Experimento: desconecta SDA de la LCD y verás el aviso de bus I2C no conectado."
+      ],
+      explanation:
+        "El DHT11 mide temperatura y humedad y entrega el dato por un pin digital (aquí D4). La LCD con módulo I2C se conecta solo con VCC, GND, SDA y SCL: " +
+        "en el ESP32 los pines I2C por defecto son GPIO21 (SDA) y GPIO22 (SCL), que en el simulador son D21 y D22. El programa lee el sensor con la librería DHT " +
+        "y escribe las dos filas de la pantalla con LiquidCrystal_I2C.",
+      code:
+`// Proyecto 7: estación climática ESP32 + DHT11 + LCD I2C
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+#include <DHT.h>
+
+DHT dht(4, DHT11);
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+
+void setup() {
+  Serial.begin(115200);
+  dht.begin();
+  lcd.begin(16, 2);
+  lcd.print("ESTACION");
+}
+
+void loop() {
+  float t = dht.readTemperature();
+  float h = dht.readHumidity();
+  lcd.setCursor(0, 0);
+  lcd.print("T: "); lcd.print(t); lcd.print("C   ");
+  lcd.setCursor(0, 1);
+  lcd.print("H: "); lcd.print(h); lcd.print("%   ");
+  Serial.print(t); Serial.print(" C / "); Serial.print(h); Serial.println(" %");
+  delay(500);
+}`
+    },
+
+    {
+      id: "p8",
+      n: 8,
+      title: "Relé que enciende una lámpara (LED de potencia)",
+      objective: "Controlar un circuito de potencia (fuente + LED) con un relé activado desde un pin digital del Arduino, como una lámpara real.",
+      comps: [
+        { type: "arduino", x: 50, y: 40 },
+        { type: "rele", x: 380, y: 40 },
+        { type: "fuente", x: 700, y: 40, props: { volt: 9, on: true } },
+        { type: "resistencia", x: 380, y: 320, props: { R: 470 } },
+        { type: "led", x: 700, y: 320 }
+      ],
+      wires: [
+        [0, "5V", 1, "vcc"],
+        [0, "GND", 1, "gnd"],
+        [0, "D7", 1, "in"],
+        [2, "plus", 1, "com"],
+        [1, "no", 3, "a"],
+        [3, "b", 4, "anodo"],
+        [4, "catodo", 2, "minus"]
+      ],
+      steps: [
+        "Coloca Arduino, módulo relé, fuente de 9 V, resistencia de 470 Ω y LED.",
+        "Alimenta el relé: VCC → 5V, GND → GND, y su entrada IN → D7.",
+        "Conecta la fuente de 9 V al relé: + → COM.",
+        "Del contacto NO del relé salen la resistencia (470 Ω) → ánodo del LED → cátodo al − de la fuente.",
+        "Carga y ejecuta el código: el relé debe conmutar cada 2 s y el LED encenderse/apagarse.",
+        "Experimento: deja IN sin conectar o a LOW; el LED debe quedar apagado (COM→NC abierto para la carga)."
+      ],
+      explanation:
+        "Un relé es un interruptor electromecánico: la bobina (IN) cierra el contacto COM→NO cuando recibe nivel alto. Así un pin del Arduino (pocos mA) " +
+        "controla un circuito de potencia (9 V, LED con su resistencia). En la simulación el LED del módulo relé indica el estado y el LED de carga se comporta " +
+        "eléctricamente como en la realidad: I = (9 − 2) / 470 ≈ 15 mA.",
+      code:
+`// Proyecto 8: lámpara con relé
+int rele = 7;
+
+void setup() {
+  pinMode(rele, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  digitalWrite(rele, HIGH);   // bobina activada: COM→NO cerrado, lámpara ON
+  Serial.println("LAMPA ON");
+  delay(2000);
+  digitalWrite(rele, LOW);    // relé liberado: lámpara OFF
+  Serial.println("LAMPA OFF");
+  delay(2000);
+}`
+    },
+
+    {
+      id: "p9",
+      n: 9,
+      title: "Servomotor controlado con un potenciómetro",
+      objective: "Mover un servomotor a cualquier ángulo (0–180°) girando un potenciómetro, combinando analogRead, map y Servo.",
+      comps: [
+        { type: "arduino", x: 50, y: 40 },
+        { type: "potenciometro", x: 50, y: 330 },
+        { type: "servo", x: 540, y: 90 }
+      ],
+      wires: [
+        [0, "5V", 1, "a"],
+        [0, "GND", 1, "b"],
+        [1, "w", 0, "A0"],
+        [0, "5V", 2, "vcc"],
+        [0, "GND", 2, "gnd"],
+        [0, "D9", 2, "sig"]
+      ],
+      steps: [
+        "Coloca el Arduino, el potenciómetro y el servomotor.",
+        "Alimenta el potenciómetro: A → 5V, B → GND, cursor W → A0.",
+        "Alimenta el servo: VCC → 5V, GND → GND y su señal (cable naranja) → D9~.",
+        "Carga y ejecuta el código.",
+        "Gira el potenciómetro de tope a tope: el brazo del servo debe barrer de 0° a 180°."
+      ],
+      explanation:
+        "El servo lee pulsos PWM en su pin de señal: analogWrite/attach generan esos pulsos y Servo.write(ángulo) fija la posición. " +
+        "El potenciómetro entrega 0–5 V en W; analogRead(A0) lo convierte a 0–1023 y map() lo traduce a 0–180°. En la simulación el brazo del servo " +
+        "gira visualmente y la corriente del servo se calcula según el ángulo.",
+      code:
+`// Proyecto 9: servo + potenciómetro
+#include <Servo.h>
+
+Servo servo;
+int potenciometro = A0;
+int pinServo = 9;
+
+void setup() {
+  servo.attach(pinServo);
+  Serial.begin(9600);
+}
+
+void loop() {
+  int valor = analogRead(potenciometro);          // 0..1023
+  int angulo = map(valor, 0, 1023, 0, 180);       // 0..180 grados
+  servo.write(angulo);
+  Serial.print("Angulo: ");
+  Serial.println(angulo);
+  delay(60);
+}`
+    },
+
+    {
+      id: "p10",
+      n: 10,
+      title: "Alarma de proximidad: HC-SR04 + buzzer",
+      objective: "Hacer sonar un buzzer cuando un objeto se acerque a menos de 15 cm, midiendo distancia con el ultrasónico HC-SR04.",
+      comps: [
+        { type: "arduino", x: 50, y: 40 },
+        { type: "ultrasonico", x: 430, y: 40, props: { distancia: 40 } },
+        { type: "buzzer", x: 760, y: 120 }
+      ],
+      wires: [
+        [0, "5V", 1, "vcc"],
+        [0, "GND", 1, "gnd"],
+        [0, "D7", 1, "trig"],
+        [0, "D6", 1, "echo"],
+        [0, "D8", 2, "plus"],
+        [2, "minus", 0, "GND"]
+      ],
+      steps: [
+        "Coloca Arduino, HC-SR04 y buzzer.",
+        "Alimenta el sensor: VCC → 5V, GND → GND; Trig → D7 y Echo → D6.",
+        "Conecta el buzzer: + → D8 y − → GND.",
+        "Carga y ejecuta el código.",
+        "En el panel de propiedades del HC-SR04 baja la distancia a menos de 15 cm: el buzzer debe sonar. Súbela: se silencia."
+      ],
+      explanation:
+        "El HC-SR04 mide distancia por ultrasonido: Trig emite un pulso de 10 µs y Echo devuelve un pulso cuyo ancho es proporcional al tiempo de ida y vuelta " +
+        "(cm = µs/58). pulseIn() mide ese ancho. Si la distancia es menor que el umbral, tone(D8, 1200) hace sonar el buzzer; si no, noTone() lo silencia. " +
+        "En la simulación varías la distancia con el control del sensor.",
+      code:
+`// Proyecto 10: alarma de proximidad HC-SR04 + buzzer
+int trig = 7;
+int echo = 6;
+int buzzer = 8;
+
+void setup() {
+  pinMode(trig, OUTPUT);
+  pinMode(echo, INPUT);
+  pinMode(buzzer, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  digitalWrite(trig, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trig, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trig, LOW);
+
+  long us = pulseIn(echo, HIGH);   // duración del pulso de eco (µs)
+  int cm = us / 58;                // distancia en cm
+
+  if (cm > 0 && cm < 15) {
+    tone(buzzer, 1200);            // ¡objeto cerca!
+    Serial.print("ALARMA a ");
+    Serial.print(cm);
+    Serial.println(" cm");
+  } else {
+    noTone(buzzer);                // zona despejada
+  }
+  delay(100);
+}`
+    },
+
+    {
+      id: "p11",
+      n: 11,
+      title: "Luz automática nocturna con LDR",
+      objective: "Encender un LED automáticamente cuando oscurezca, leyendo el módulo LDR (fotoresistencia) con analogRead.",
+      comps: [
+        { type: "arduino", x: 50, y: 40 },
+        { type: "ldr", x: 400, y: 40, props: { luz: 0.8 } },
+        { type: "resistencia", x: 650, y: 300, props: { R: 220 } },
+        { type: "led", x: 870, y: 300 }
+      ],
+      wires: [
+        [0, "5V", 1, "vcc"],
+        [0, "GND", 1, "gnd"],
+        [1, "ao", 0, "A0"],
+        [0, "D8", 2, "a"],
+        [2, "b", 3, "anodo"],
+        [3, "catodo", 0, "GND"]
+      ],
+      steps: [
+        "Coloca Arduino, módulo LDR, resistencia de 220 Ω y LED.",
+        "Alimenta el LDR: VCC → 5V, GND → GND y su salida analógica AO → A0.",
+        "Conecta D8 → resistencia → ánodo del LED y cátodo → GND.",
+        "Carga y ejecuta el código.",
+        "En el panel de propiedades del LDR mueve el deslizador «luz»: con poca luz (valor bajo en A0) el LED se enciende; con mucha luz se apaga."
+      ],
+      explanation:
+        "El módulo LDR lleva una fotoresistencia en un divisor de tensión: su salida AO entrega un voltaje proporcional a la luz recibida (más luz → más voltaje). " +
+        "analogRead(A0) lo mide (0–1023) y el programa compara contra un umbral: si hay poca luz (valor < 400), digitalWrite(D8, HIGH) enciende el LED, " +
+        "como una lámpara nocturna automática. La resistencia de 220 Ω protege el LED.",
+      code:
+`// Proyecto 11: luz automática con LDR
+int ldr = A0;        // salida AO del módulo LDR
+int led = 8;
+
+void setup() {
+  pinMode(led, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  int luz = analogRead(ldr);        // 0..1023 (más luz = valor más alto)
+  if (luz < 400) {
+    digitalWrite(led, HIGH);        // oscuro → enciende la luz
+    Serial.println("NOCHE: LED ON");
+  } else {
+    digitalWrite(led, LOW);         // hay luz → apaga
+    Serial.println("DIA: LED OFF");
+  }
+  Serial.print("Luz: ");
+  Serial.println(luz);
+  delay(200);
 }`
     }
   ];

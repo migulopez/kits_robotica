@@ -409,7 +409,8 @@
             break;
           }
           case "lcd":
-            c.state.powered = vOf(K(c, "VDD")) - vOf(K(c, "VSS")) > 4.5;
+            // LCD 16x2 con módulo I2C: se alimenta por VCC/GND (el backpack regula internamente)
+            c.state.powered = vOf(K(c, "vcc")) - vOf(K(c, "gnd")) > 3;
             if (c.state.lines == null) c.state.lines = ["", ""];
             break;
           default:
@@ -455,12 +456,12 @@
           M.push({ sev: "warn", text: `⚠ La resistencia disipa ${fmt(c.state.read.P * 1000)} mW (límite típico 250 mW). Aumenta su valor de resistencia.` });
         if (c.type === "lcd") {
           if (!c.state.powered)
-            M.push({ sev: "warn", text: "🖥 La pantalla LCD no recibe alimentación. Verifica las conexiones VDD → 5 V y VSS → GND." });
+            M.push({ sev: "warn", text: "🖥 La pantalla LCD no recibe alimentación. Verifica las conexiones VCC → 5 V y GND → GND." });
           else {
-            const need = ["RS", "E", "D4", "D5", "D6", "D7"];
-            const missing = need.filter((p) => !this.wireFrom(c.id, p));
-            if (missing.length)
-              M.push({ sev: "warn", text: `🖥 La LCD está encendida pero no muestra nada: faltan conexiones hacia el Arduino en los pines ${missing.join(", ")}.` });
+            const wsda = this.wireFrom(c.id, "sda"), wscl = this.wireFrom(c.id, "scl");
+            const toMcu = (w) => w && cat[w.comp.type] && cat[w.comp.type].mcu;
+            if (!toMcu(wsda) || !toMcu(wscl))
+              M.push({ sev: "warn", text: "🖥 La LCD está encendida pero no muestra nada: conecta SDA y SCL a los pines I2C del microcontrolador (UNO: A4/A5; ESP32: D21/D22)." });
           }
         }
         if (cat[c.type].mcu) {
@@ -530,6 +531,34 @@
     lcdSetCursor(mcu, rsPin, ePin, col, row) { return [col, row]; }
     lcdClear(mcu, rsPin, ePin) {
       const lcd = this.lcdFind(mcu, rsPin, ePin);
+      if (lcd) lcd.state.lines = ["", ""];
+    }
+
+    /* ---- LCD 16x2 con módulo I2C (SDA/SCL) ---- */
+    i2cPinsOf(mcu) {
+      return mcu.type === "esp32" ? { sda: "D21", scl: "D22" } : { sda: "A4", scl: "A5" };
+    }
+    lcdFindI2C(mcu) {
+      const io = this.i2cPinsOf(mcu);
+      for (const c of this.comps) {
+        if (c.type !== "lcd") continue;
+        const ws = this.wireFrom(c.id, "sda"), wc = this.wireFrom(c.id, "scl");
+        if (ws && ws.comp === mcu && ws.pin.id === io.sda && wc && wc.comp === mcu && wc.pin.id === io.scl) return c;
+      }
+      return null;
+    }
+    lcdPrintI2C(mcu, str, cursor) {
+      const lcd = this.lcdFindI2C(mcu);
+      if (!lcd || !lcd.state.powered) return;
+      if (lcd.state.lines == null) lcd.state.lines = ["", ""];
+      const [col, row] = cursor;
+      const r = row === 1 ? 1 : 0;
+      let line = lcd.state.lines[r];
+      line = line.padEnd(col, " ").slice(0, col) + str + line.slice(col + str.length);
+      lcd.state.lines[r] = line.slice(0, 16);
+    }
+    lcdClearI2C(mcu) {
+      const lcd = this.lcdFindI2C(mcu);
       if (lcd) lcd.state.lines = ["", ""];
     }
     dhtRead(mcu, pinId, what) {

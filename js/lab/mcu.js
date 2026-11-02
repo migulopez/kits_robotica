@@ -4,7 +4,7 @@
    Ejecuta código Arduino/ESP32 dentro de una sandbox con la API
    estándar (pinMode, digitalWrite, analogRead, analogWrite,
    tone, pulseIn, delay, millis, Serial, Servo, LiquidCrystal,
-   DHT, IRrecv). Las escrituras en pines se traducen a fuentes de
+   LiquidCrystal_I2C, DHT, IRrecv). Las escrituras en pines se traducen a fuentes de
    voltaje en el motor MNA; las lecturas consultan los nodos reales
    del circuito, así que el programa SOLO funciona si el cableado
    es correcto.
@@ -40,6 +40,9 @@
         c = c.replace(/\b(int|long|float|double|boolean|char|byte|word|short|unsigned|String)\s+([A-Za-z_]\w*)\s*=/g, "let $2 =");
       for (let i = 0; i < 3; i++)
         c = c.replace(/\b(int|long|float|double|boolean|char|byte|word|short|unsigned|String)\s+([A-Za-z_]\w*)\s*;/g, "let $2;");
+      // declaraciones de objeto Arduino: «LiquidCrystal lcd(12, 11, ...)» → «let lcd = new LiquidCrystal(...)»
+      c = c.replace(/\b([A-Z]\w*)\s+([a-z_]\w*)\s*\(/g, "let $2 = new $1(");
+      c = c.replace(/\b([A-Z]\w*)\s+([a-z_]\w*)\s*;/g, "let $2 = new $1();");
       return c;
     }
 
@@ -83,6 +86,14 @@
           setCursor(c, r) { this.cur = [c, r]; }
           clear() { eng.lcdClear(comp, this.p[0], this.p[1]); }
           print(s) { eng.lcdPrint(comp, this.p[0], this.p[1], String(s), this.cur); }
+        },
+        // LCD 16x2 con módulo I2C (PCF8574): LiquidCrystal_I2C lcd(0x27, 16, 2);
+        LiquidCrystal_I2C: class {
+          constructor(addr, cols, rows) { this.addr = addr; this.cols = cols; this.rows = rows; this.cur = [0, 0]; }
+          begin() {}
+          setCursor(c, r) { this.cur = [+c, +r]; }
+          clear() { eng.lcdClearI2C(comp); }
+          print(s) { eng.lcdPrintI2C(comp, String(s), this.cur); }
         },
         DHT: class {
           constructor(p) { this.pin = self.norm(p); }

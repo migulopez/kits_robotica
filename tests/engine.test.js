@@ -175,13 +175,28 @@ const W = (c, a, pa, b, pb, col) => c.addWire({ comp: a, pin: pa }, { comp: b, p
   const lcd = c.addComp("lcd", 0, 0);
   for (let i = 0; i < 2; i++) c.tick(0.1);
   check("T10 LCD sin alimentación → aviso", c.messages.some((m) => /LCD no recibe/i.test(m.text)));
-  W(c, a.id, "5V", lcd.id, "VDD"); W(c, a.id, "GND", lcd.id, "VSS");
-  W(c, a.id, "D12", lcd.id, "RS"); W(c, a.id, "D11", lcd.id, "E");
+  W(c, a.id, "5V", lcd.id, "vcc"); W(c, a.id, "GND", lcd.id, "gnd");
   for (let i = 0; i < 3; i++) c.tick(0.1);
-  check("T10 LCD alimentada → encendida", lcd.state.powered === true);
-  c.lcdPrint(a, "D12", "D11", "HOLA MUNDO", [0, 0]);
-  check("T10 LCD muestra «HOLA MUNDO»", (lcd.state.lines[0] || "").indexOf("HOLA MUNDO") === 0);
-  check("T10 aviso pines de datos LCD faltantes", c.messages.some((m) => /D4/.test(m.text)));
+  check("T10 LCD (I2C) alimentada → encendida", lcd.state.powered === true);
+  check("T10 aviso SDA/SCL faltantes", c.messages.some((m) => /SDA y SCL/i.test(m.text)));
+  W(c, a.id, "A4", lcd.id, "sda"); W(c, a.id, "A5", lcd.id, "scl");
+  for (let i = 0; i < 3; i++) c.tick(0.1);
+  c.lcdPrintI2C(a, "HOLA MUNDO", [0, 0]);
+  check("T10 LCD I2C muestra «HOLA MUNDO» vía SDA=A4/SCL=A5", (lcd.state.lines[0] || "").indexOf("HOLA MUNDO") === 0);
+  check("T10 sin aviso I2C cuando SDA/SCL están conectados", !c.messages.some((m) => /SDA y SCL/i.test(m.text)));
+  // LCD I2C con ESP32 (D21/D22) y su código real por el intérprete
+  {
+    const c2 = new Circuit(); c2.masterPower = true;
+    const e = c2.addComp("esp32", 0, 0, { usb: true });
+    const l2 = c2.addComp("lcd", 0, 0);
+    W(c2, e.id, "5V", l2.id, "vcc"); W(c2, e.id, "GND", l2.id, "gnd");
+    W(c2, e.id, "D21", l2.id, "sda"); W(c2, e.id, "D22", l2.id, "scl");
+    for (let i = 0; i < 3; i++) c2.tick(0.1);
+    const { MCUController } = require("../js/lab/mcu.js");
+    const ctrl = new MCUController(c2, e);
+    ctrl.load('LiquidCrystal_I2C lcd(0x27, 16, 2); void setup() { lcd.begin(16, 2); lcd.setCursor(0, 0); lcd.print("ESP32 OK"); } void loop() {}');
+    check("T10 ESP32 + LCD I2C: LiquidCrystal_I2C imprime por D21/D22", ctrl.running === true && (l2.state.lines[0] || "").indexOf("ESP32 OK") === 0);
+  }
 }
 
 // T11: intérprete Arduino ejecuta código real contra el circuito
@@ -243,6 +258,31 @@ const W = (c, a, pa, b, pb, col) => c.addWire({ comp: a, pin: pa }, { comp: b, p
   console.log("T13 LED I =", (led.state.ledI * 1000).toFixed(1), "mA | powered =", a.state.powered);
   check("T13 Arduino alimentado por VIN (powered)", a.state.powered === true);
   check("T13 LED enciende con cátodo en GND2 (I ≈ 13 mA)", led.state.ledOn === true && approx(led.state.ledI * 1000, 13.1, 1.5));
+}
+
+// T14: prácticas guiadas — 11 proyectos, componentes/pines válidos, código que compila y kits asignados
+{
+  const PROJECTS = require("../js/lab/projects.js");
+  const { MCUController } = require("../js/lab/mcu.js");
+  check("T14 hay 11 prácticas guiadas", PROJECTS.length === 11);
+  let bad = "";
+  for (const p of PROJECTS) {
+    for (const pc of p.comps) if (!LAB_CATALOG[pc.type]) bad = p.id + " tipo " + pc.type;
+    for (const [ia, pa, ib, pb] of p.wires || []) {
+      const A = LAB_CATALOG[p.comps[ia].type], B = LAB_CATALOG[p.comps[ib].type];
+      if (!A || !A.pins.some((q) => q.id === pa)) bad = p.id + " pin " + pa;
+      if (!B || !B.pins.some((q) => q.id === pb)) bad = p.id + " pin " + pb;
+    }
+    try { new Function(MCUController.transpile(p.code)); } catch (e) { bad = p.id + " código: " + e.message; }
+  }
+  check("T14 todos los proyectos usan componentes/pines válidos y su código compila", !bad, bad);
+  check("T14 cada componente de cada proyecto indica su kit", PROJECTS.every((p) => p.comps.every((c) => (LAB_CATALOG[c.type].kits || []).length > 0)));
+  const lcdP = PROJECTS.filter((p) => p.comps.some((c) => c.type === "lcd"));
+  check("T14 las prácticas con LCD usan el bus I2C (sda/scl)", lcdP.length >= 2 && lcdP.every((p) => {
+    const li = p.comps.findIndex((c) => c.type === "lcd");
+    return p.wires.some(([a, pa, b, pb]) => (a === li && pa === "sda") || (b === li && pb === "sda"))
+        && p.wires.some(([a, pa, b, pb]) => (a === li && pa === "scl") || (b === li && pb === "scl"));
+  }));
 }
 
 console.log(`\n==== RESULTADO: ${pass} pasados, ${fail} fallados ====`);

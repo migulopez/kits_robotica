@@ -639,16 +639,16 @@ const KITS = [
       },
       {
         id: "lcd1602",
-        name: "Pantalla LCD 16x2",
-        image: "assets/images/components/lcd1602.svg",
+        name: "Pantalla LCD 16x2 con módulo I2C",
+        image: "assets/images/components/lcd_i2c.svg",
         queEs:
-          "Pantalla de cristal líquido de 16 columnas × 2 filas con retroiluminación (generalmente azul) y controlador HD44780, a menudo con backpack I2C.",
+          "Pantalla de cristal líquido de 16 columnas × 2 filas con retroiluminación azul y controlador HD44780, que en este kit viene con el módulo I2C (backpack PCF8574) ya soldado detrás.",
         paraQue:
           "Sirve para mostrar información del sistema al usuario: lecturas de temperatura, mensajes de estado, menús o alertas, sin necesidad de computador.",
         funciona:
-          "Cada píxel se controla enviando caracteres al controlador HD44780. En modo paralelo usa 6+ pines; con el módulo I2C solo usa 2 pines (SDA/SCL) mediante el protocolo I2C a dirección 0x27.",
+          "El módulo I2C traduce el protocolo serie I2C (pines SDA y SCL, dirección habitual 0x27) a las señales del controlador HD44780, así que la pantalla solo ocupa 2 pines del microcontrolador más la alimentación.",
         utiliza:
-          "VCC a 5 V, GND a GND; en modo I2C: SDA a GPIO21 (ESP32) o A4 (UNO), SCL a GPIO22 o A5. Se programa con la librería LiquidCrystal_I2C: lcd.setCursor(0,0); lcd.print(\"Hola\").",
+          "VCC a 5 V, GND a GND, SDA a GPIO21 (ESP32) o A4 (UNO), SCL a GPIO22 (ESP32) o A5 (UNO). Se programa con la librería LiquidCrystal_I2C: LiquidCrystal_I2C lcd(0x27, 16, 2); lcd.setCursor(0,0); lcd.print(\"Hola\").",
         ejemplos: [
           "Estación meteorológica que muestra temperatura y humedad del DHT11.",
           "Menú del sistema domótico para elegir el dispositivo a controlar.",

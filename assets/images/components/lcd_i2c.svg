@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240">
+  <ellipse cx="120" cy="192" rx="98" ry="10" fill="rgba(0,0,0,.18)"/>
+  <!-- módulo I2C (PCF8574) atornillado detrás, asomando por arriba -->
+  <rect x="32" y="50" width="92" height="28" rx="5" fill="#1d4ed8" stroke="#1e3a8a" stroke-width="2"/>
+  <rect x="38" y="56" width="26" height="16" rx="2" fill="#0f172a"/>
+  <text x="51" y="67" text-anchor="middle" font-family="Arial" font-size="7" font-weight="bold" fill="#7dd3fc">I2C</text>
+  <circle cx="116" cy="58" r="3" fill="#93c5fd"/>
+  <circle cx="116" cy="70" r="3" fill="#93c5fd"/>
+  <!-- 4 pines del módulo I2C: VCC, GND, SDA, SCL -->
+  <g fill="#d4af37">
+    <rect x="41" y="60" width="6" height="16"/>
+    <rect x="63" y="60" width="6" height="16"/>
+    <rect x="85" y="60" width="6" height="16"/>
+    <rect x="107" y="60" width="6" height="16"/>
+  </g>
+  <rect x="32" y="76" width="176" height="92" rx="10" fill="#c7ced8" stroke="#8f98a5" stroke-width="2"/>
+  <rect x="42" y="86" width="156" height="72" rx="5" fill="#16337a"/>
+  <rect x="42" y="86" width="156" height="72" rx="5" fill="rgba(59,130,246,.18)"/>
+  <g fill="#86efac" opacity=".9">
+    <rect x="50" y="96" width="9" height="12" rx="1.5"/><rect x="63" y="96" width="9" height="12" rx="1.5"/><rect x="76" y="96" width="9" height="12" rx="1.5"/><rect x="89" y="96" width="9" height="12" rx="1.5"/><rect x="102" y="96" width="9" height="12" rx="1.5"/><rect x="115" y="96" width="9" height="12" rx="1.5"/><rect x="128" y="96" width="9" height="12" rx="1.5"/><rect x="141" y="96" width="9" height="12" rx="1.5"/><rect x="154" y="96" width="9" height="12" rx="1.5"/><rect x="167" y="96" width="9" height="12" rx="1.5"/><rect x="180" y="96" width="9" height="12" rx="1.5"/>
+    <rect x="50" y="122" width="9" height="12" rx="1.5"/><rect x="63" y="122" width="9" height="12" rx="1.5"/><rect x="76" y="122" width="9" height="12" rx="1.5"/><rect x="89" y="122" width="9" height="12" rx="1.5"/><rect x="102" y="122" width="9" height="12" rx="1.5"/><rect x="115" y="122" width="9" height="12" rx="1.5"/><rect x="128" y="122" width="9" height="12" rx="1.5"/><rect x="141" y="122" width="9" height="12" rx="1.5"/>
+    <rect x="154" y="122" width="20" height="12" rx="1.5"/>
+  </g>
+  <text x="120" y="176" text-anchor="middle" font-family="Arial" font-size="10" font-weight="bold" fill="#64748b">LCD 16x2 · I2C</text>
+</svg>
