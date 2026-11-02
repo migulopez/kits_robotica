@@ -9,7 +9,8 @@
 (function () {
   "use strict";
 
-  const S = 150;          // tamaño en px de un componente en la mesa
+  const S = 150;          // tamaño en px por defecto de un componente en la mesa
+  const sizeOf = (c) => (LAB_CATALOG[c.type] && LAB_CATALOG[c.type].size) || S; // tamaño según el tipo
   const WORLD = 4000;     // tamaño del mundo virtual
   const WIRE_COLORS = {
     auto: "Automático", rojo: "#ef4444", negro: "#0b1120",
@@ -30,15 +31,16 @@
   };
 
   /* ================= utilidades de geometría ================= */
-  function pinWorldOf(comp, pinId) {
+  function pinWorldOf(comp, pinId, size) {
     const def = LAB_CATALOG[comp.type];
     const pin = def.pins.find((p) => p.id === pinId);
-    const lx = (pin.x * S) / 240 - S / 2;
-    const ly = (pin.y * S) / 240 - S / 2;
+    const s = size || sizeOf(comp);
+    const lx = (pin.x * s) / 240 - s / 2;
+    const ly = (pin.y * s) / 240 - s / 2;
     const r = (comp.rot * Math.PI) / 2;
     const rx = lx * Math.cos(r) - ly * Math.sin(r);
     const ry = lx * Math.sin(r) + ly * Math.cos(r);
-    return { x: comp.x + S / 2 + rx, y: comp.y + S / 2 + ry };
+    return { x: comp.x + s / 2 + rx, y: comp.y + s / 2 + ry };
   }
   function pinWorld(cp) {
     const c = LabUI.engine.compById(cp.comp);
@@ -111,22 +113,24 @@
   function startPlace(type, e) {
     e.preventDefault();
     const w = worldFromEvent(e);
-    const c = LabUI.engine.addComp(type, w.x - S / 2, w.y - S / 2);
+    const sz = (LAB_CATALOG[type] && LAB_CATALOG[type].size) || S;
+    const c = LabUI.engine.addComp(type, w.x - sz / 2, w.y - sz / 2);
     renderComp(c);
     select(c);
-    LabUI.move = { comp: c, dx: S / 2, dy: S / 2, moved: false };
+    LabUI.move = { comp: c, dx: sz / 2, dy: sz / 2, moved: false };
   }
 
   /* ================= renderizado de componentes ================= */
   function overlaysFor(c, def) {
-    const pos = (o, extra) => `style="left:${(o.x * S) / 240 - (extra || o.r || 10)}px;top:${(o.y * S) / 240 - (extra || o.r || 10)}px;${extra ? "" : `width:${(o.r * 2 * S) / 240}px;height:${(o.r * 2 * S) / 240}px;`}"`;
+    const sz = sizeOf(c);
+    const pos = (o, extra) => `style="left:${(o.x * sz) / 240 - (extra || o.r || 10)}px;top:${(o.y * sz) / 240 - (extra || o.r || 10)}px;${extra ? "" : `width:${(o.r * 2 * sz) / 240}px;height:${(o.r * 2 * sz) / 240}px;`}"`;
     let h = "";
     if (def.glow) h += `<div class="ov glow" ${pos(def.glow)}></div>`;
     if (def.rotor) h += `<div class="ov rotor" ${pos(def.rotor)}></div>`;
     if (def.horn) h += `<div class="ov horn" ${pos(def.horn, 6)}><div class="horn-arm"></div></div>`;
     if (def.buzzOv) h += `<div class="ov buzz" ${pos(def.buzzOv)}>🔊</div>`;
-    if (def.screen) h += `<div class="ov lcd-screen" style="left:${(def.screen.x * S) / 240}px;top:${(def.screen.y * S) / 240}px;width:${(def.screen.w * S) / 240}px;height:${(def.screen.h * S) / 240}px"><div class="lcd-l0"></div><div class="lcd-l1"></div></div>`;
-    if (def.display) h += `<div class="ov mm-display" style="left:${(def.display.x * S) / 240}px;top:${(def.display.y * S) / 240}px;width:${(def.display.w * S) / 240}px;height:${(def.display.h * S) / 240}px">--</div>`;
+    if (def.screen) h += `<div class="ov lcd-screen" style="left:${(def.screen.x * sz) / 240}px;top:${(def.screen.y * sz) / 240}px;width:${(def.screen.w * sz) / 240}px;height:${(def.screen.h * sz) / 240}px"><div class="lcd-l0"></div><div class="lcd-l1"></div></div>`;
+    if (def.display) h += `<div class="ov mm-display" style="left:${(def.display.x * sz) / 240}px;top:${(def.display.y * sz) / 240}px;width:${(def.display.w * sz) / 240}px;height:${(def.display.h * sz) / 240}px">--</div>`;
     if (def.rled) h += `<div class="ov rled" ${pos(def.rled)}></div>`;
     h += `<div class="ov badge"></div>`;
     return h;
@@ -134,18 +138,22 @@
 
   function renderComp(c) {
     const def = LAB_CATALOG[c.type];
+    const sz = sizeOf(c);
+    const pr = (def.pinSize || 14) / 2;
     const d = document.createElement("div");
     d.className = "lab-comp";
     d.dataset.id = c.id;
     d.style.left = c.x + "px";
     d.style.top = c.y + "px";
-    d.style.width = S + "px";
-    d.style.height = S + "px";
+    d.style.width = sz + "px";
+    d.style.height = sz + "px";
     d.style.transform = `rotate(${c.rot * 90}deg)`;
     let h = `<img src="${def.img}" alt="${def.name}" draggable="false">`;
-    for (const p of def.pins) {
-      h += `<div class="pin${p.gnd ? " gnd" : ""}${p.vcc ? " vcc" : ""}" data-comp="${c.id}" data-pin="${p.id}" title="${def.name} · ${p.name}" style="left:${(p.x * S) / 240 - 7}px;top:${(p.y * S) / 240 - 7}px">${def.mcu ? `<span class="pin-label">${p.name}</span>` : ""}</div>`;
-    }
+    const showLabels = def.mcu || def.labels;
+    def.pins.forEach((p, i) => {
+      const lbl = showLabels ? `<span class="pin-label${i % 2 ? " alt" : ""}">${p.name}</span>` : "";
+      h += `<div class="pin${p.gnd ? " gnd" : ""}${p.vcc ? " vcc" : ""}" data-comp="${c.id}" data-pin="${p.id}" title="${def.name} · ${p.name}" style="left:${(p.x * sz) / 240 - pr}px;top:${(p.y * sz) / 240 - pr}px;width:${pr * 2}px;height:${pr * 2}px">${lbl}</div>`;
+    });
     h += overlaysFor(c, def);
     d.innerHTML = h;
     $("#lab-world").appendChild(d);
@@ -409,6 +417,7 @@
         A.osc.start();
       }
       A.osc.frequency.value = f;
+      A.gain.gain.value = 0.04;   // restaurar volumen al reanudar el sonido
     } catch (e) { /* audio no disponible */ }
   }
 
@@ -448,8 +457,9 @@
         const def = LAB_CATALOG[c.type];
         if (def.knob) {
           const w = worldFromEvent(e);
-          const cx = c.x + (def.knob.x * S) / 240, cy = c.y + (def.knob.y * S) / 240;
-          if (Math.hypot(w.x - cx, w.y - cy) < (def.knob.r * S) / 240) {
+          const ksz = sizeOf(c);
+          const cx = c.x + (def.knob.x * ksz) / 240, cy = c.y + (def.knob.y * ksz) / 240;
+          if (Math.hypot(w.x - cx, w.y - cy) < (def.knob.r * ksz) / 240) {
             LabUI.knobDrag = { comp: c, cx, cy };
             return;
           }
@@ -483,8 +493,9 @@
       if (LabUI.move) {
         const w = worldFromEvent(e);
         const c = LabUI.move.comp;
-        c.x = Math.max(0, Math.min(WORLD - S, w.x - LabUI.move.dx));
-        c.y = Math.max(0, Math.min(WORLD - S, w.y - LabUI.move.dy));
+        const dsz = sizeOf(c);
+        c.x = Math.max(0, Math.min(WORLD - dsz, w.x - LabUI.move.dx));
+        c.y = Math.max(0, Math.min(WORLD - dsz, w.y - LabUI.move.dy));
         const d = document.querySelector(`#lab-world .lab-comp[data-id="${c.id}"]`);
         if (d) { d.style.left = c.x + "px"; d.style.top = c.y + "px"; }
         renderWires();
@@ -578,13 +589,22 @@
   /* ================= editor de código ================= */
   const KEYWORDS = "void int long float double boolean char byte word String unsigned const static volatile return if else for while do switch case default break continue HIGH LOW INPUT OUTPUT INPUT_PULLUP true false new class include define".split(" ");
   function highlight(code) {
-    let esc = code.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    esc = esc.replace(/(\/\/[^\n]*|\/\*[\s\S]*?\*\/)/g, '<span class="c-com">$1</span>');
-    esc = esc.replace(/("(?:[^"\\]|\\.)*")/g, '<span class="c-str">$1</span>');
-    esc = esc.replace(/\b(\d+\.?\d*)\b/g, '<span class="c-num">$1</span>');
-    esc = esc.replace(/\b([A-Za-z_]\w*)(?=\s*\()/g, '<span class="c-fn">$1</span>');
-    esc = esc.replace(new RegExp("\\b(" + KEYWORDS.join("|") + ")\\b", "g"), '<span class="c-kw">$1</span>');
-    return esc + "\n";
+    // UNA SOLA PASADA: así los spans insertados no se vuelven a tocar (evita el texto fantasma "class")
+    const esc = code.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    const re = new RegExp(
+      "(\\/\\/[^\\n]*|\\/\\*[\\s\\S]*?\\*\\/)" +            // 1 comentario
+      "|(\"(?:[^\"\\\\]|\\\\.)*\")" +                        // 2 cadena
+      "|\\b(\\d+\\.?\\d*)\\b" +                               // 3 número
+      "|\\b([A-Za-z_]\\w*)(?=\\s*\\()" +                      // 4 función
+      "|\\b(" + KEYWORDS.join("|") + ")\\b", "g"             // 5 palabra clave
+    );
+    return esc.replace(re, (m, com, str, num, fn, kw) => {
+      if (com) return '<span class="c-com">' + com + "</span>";
+      if (str) return '<span class="c-str">' + str + "</span>";
+      if (num) return '<span class="c-num">' + num + "</span>";
+      if (fn) return '<span class="c-fn">' + fn + "</span>";
+      return '<span class="c-kw">' + kw + "</span>";
+    }) + "\n";
   }
   function syncEditor() {
     const ta = $("#code-editor");
@@ -719,7 +739,7 @@
       svg.appendChild(g);
     }
     for (const [ia, pa, ib, pb] of project.wires) {
-      const p1 = pinWorldOf(comps[ia], pa), p2 = pinWorldOf(comps[ib], pb);
+      const p1 = pinWorldOf(comps[ia], pa, S), p2 = pinWorldOf(comps[ib], pb, S);
       const path = document.createElementNS(svgNS, "path");
       path.setAttribute("d", `M ${p1.x} ${p1.y} C ${p1.x} ${p1.y + 40}, ${p2.x} ${p2.y + 40}, ${p2.x} ${p2.y}`);
       path.setAttribute("class", "wire pv-wire");

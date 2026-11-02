@@ -179,14 +179,16 @@
 .pin.vcc { background: #ef4444; border-color: #fecaca; }
 .pin-label {
   position: absolute;
-  left: 16px; top: -4px;
-  font-size: 9px;
+  left: 12px; top: -5px;
+  font-size: 7px;
   font-weight: 700;
   color: #e2e8f0;
   text-shadow: 0 1px 3px #000;
   white-space: nowrap;
   pointer-events: none;
 }
+/* etiquetas escalonadas en dos filas para que no se solapen */
+.pin-label.alt { top: 7px; left: 12px; }
 
 /* overlays dinámicos */
 .ov { position: absolute; pointer-events: none; }

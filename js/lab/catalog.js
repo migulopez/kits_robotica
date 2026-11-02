@@ -22,34 +22,34 @@
     { id: "instrumentos", name: "🧰 Instrumentos" }
   ];
 
-  // Pines del Arduino UNO sobre arduino_uno.svg (espacio 240x240)
+  // Pines del Arduino UNO sobre arduino_uno.svg (espacio 240x240) — bien separados
   const arduinoPins = [];
-  for (let i = 0; i <= 7; i++) arduinoPins.push(P("D" + i, "D" + i + (i === 3 || i === 5 || i === 6 ? "~" : ""), 108 + i * 10, 48));
-  for (let i = 8; i <= 13; i++) arduinoPins.push(P("D" + i, "D" + i + (i === 9 || i === 10 || i === 11 ? "~" : ""), 186, 92 + (i - 8) * 12));
+  for (let i = 0; i <= 7; i++) arduinoPins.push(P("D" + i, "D" + i + (i === 3 || i === 5 || i === 6 ? "~" : ""), 92 + i * 13, 46));
+  for (let i = 8; i <= 13; i++) arduinoPins.push(P("D" + i, "D" + i + (i === 9 || i === 10 || i === 11 ? "~" : ""), 189, 84 + (i - 8) * 16));
   const bottom = [
-    ["A0", "A0", 66], ["A1", "A1", 76], ["A2", "A2", 86], ["A3", "A3", 96],
-    ["A4", "A4", 106], ["A5", "A5", 116], ["5V", "5V", 128], ["3V3", "3V3", 138],
-    ["GND", "GND", 148], ["GND2", "GND", 158], ["VIN", "VIN", 170]
+    ["A0", "A0", 60], ["A1", "A1", 71], ["A2", "A2", 82], ["A3", "A3", 93],
+    ["A4", "A4", 104], ["A5", "A5", 115], ["5V", "5V", 126], ["3V3", "3V3", 137],
+    ["GND", "GND", 148], ["GND2", "GND", 159], ["VIN", "VIN", 170]
   ];
   bottom.forEach(([id, name, x]) =>
-    arduinoPins.push(P(id, name, x, 190, id.indexOf("GND") === 0 ? { gnd: true } : { vcc: true }))
+    arduinoPins.push(P(id, name, x, 196, id.indexOf("GND") === 0 ? { gnd: true } : { vcc: true }))
   );
 
-  // Pines del ESP32 sobre esp32.svg (espacio 240x240)
+  // Pines del ESP32 sobre esp32.svg (espacio 240x240) — bien separados
   const esp32Pins = [];
   const left = ["3V3", "EN", "D36", "D39", "D34", "D35", "D32", "D33", "D25", "D26", "D27", "D14", "D12", "D13", "GND"];
   left.forEach((n, i) =>
-    esp32Pins.push(P(n, n, 73, 60 + i * 9, n === "GND" ? { gnd: true } : n === "3V3" ? { vcc: true } : {}))
+    esp32Pins.push(P(n, n, 70, 50 + i * 11, n === "GND" ? { gnd: true } : n === "3V3" ? { vcc: true } : {}))
   );
   const right = ["5V", "D23", "D22", "TX0", "RX0", "D21", "D19", "D18", "D5", "D17", "D16", "D4", "D0", "D2"];
   right.forEach((n, i) =>
-    esp32Pins.push(P(n, n, 167, 60 + i * 9, n === "5V" ? { vcc: true } : {}))
+    esp32Pins.push(P(n, n, 170, 50 + i * 11, n === "5V" ? { vcc: true } : {}))
   );
 
-  // Pines del LCD 16x2 sobre lcd1602.svg
+  // Pines del LCD 16x2 sobre lcd1602.svg — bien separados
   const lcdPins = [];
   ["VSS", "VDD", "VO", "RS", "RW", "E", "D0", "D1", "D2", "D3", "D4", "D5", "D6", "D7", "A", "K"].forEach((n, i) =>
-    lcdPins.push(P(n, n, 46 + i * 10, 69, n === "VSS" || n === "K" ? { gnd: true } : n === "VDD" || n === "A" ? { vcc: true } : {}))
+    lcdPins.push(P(n, n, 38 + i * 11, 66, n === "VSS" || n === "K" ? { gnd: true } : n === "VDD" || n === "A" ? { vcc: true } : {}))
   );
 
   global.LAB_CATALOG = {
@@ -109,12 +109,14 @@
       name: "Arduino UNO", cat: "controladores", kits: [1, 2],
       img: "assets/images/components/arduino_uno.svg",
       mcu: true, vcc: 5, pins: arduinoPins,
+      size: 220, pinSize: 10,
       props: { usb: true }
     },
     esp32: {
       name: "ESP32 DevKit (CH340)", cat: "controladores", kits: [3],
       img: "assets/images/components/esp32.svg",
       mcu: true, vcc: 3.3, pins: esp32Pins,
+      size: 220, pinSize: 10,
       props: { usb: true }
     },
 
@@ -224,6 +226,7 @@
       name: "Pantalla LCD 16x2", cat: "visualizacion", kits: [3],
       img: "assets/images/components/lcd1602.svg",
       pins: lcdPins,
+      size: 230, pinSize: 10, labels: true,
       screen: { x: 42, y: 86, w: 156, h: 72 }
     },
 
