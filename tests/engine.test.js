@@ -211,5 +211,39 @@ const W = (c, a, pa, b, pb, col) => c.addWire({ comp: a, pin: pa }, { comp: b, p
   check("T11 serial imprime lecturas", /8\d\d/.test(serial));
 }
 
+// T12: pines GND de un mismo componente son el mismo nodo; la fuente interna del MCU retorna a su GND
+{
+  const c = new Circuit(); c.masterPower = true;
+  const a = c.addComp("arduino", 0, 0, { usb: true });
+  const m = c.addComp("multimetro", 0, 0, { mode: "V" });
+  W(c, m.id, "vom", a.id, "5V"); W(c, m.id, "com", a.id, "GND2"); // sonda negra en el SEGUNDO GND
+  for (let i = 0; i < 3; i++) c.tick(0.1);
+  console.log("T12 5V↔GND2 =", JSON.stringify(m.state.read));
+  check("T12 5V↔GND2 = 5 V (GND y GND2 unidos internamente)", approx(parseFloat(m.state.read.text), 5, 0.05));
+  W(c, m.id, "com", a.id, "GND");
+  for (let i = 0; i < 3; i++) c.tick(0.1);
+  check("T12 5V↔GND = 5 V", approx(parseFloat(m.state.read.text), 5, 0.05));
+  check("T12 Arduino alimentado por USB (powered)", a.state.powered === true);
+  c.masterPower = false;
+  for (let i = 0; i < 3; i++) c.tick(0.1);
+  check("T12 con alimentación general OFF el MCU no da tensión", a.state.powered === false && approx(parseFloat(m.state.read.text), 0, 0.05));
+}
+
+// T13: LED con cátodo en GND2 del Arduino alimentado por VIN (camino de retorno por GND interno)
+{
+  const c = new Circuit(); c.masterPower = true;
+  const f = c.addComp("fuente", 0, 0, { volt: 5, on: true });
+  const a = c.addComp("arduino", 0, 0, { usb: false });
+  const r = c.addComp("resistencia", 0, 0, { R: 220 });
+  const led = c.addComp("led", 0, 0);
+  W(c, f.id, "plus", a.id, "VIN"); W(c, f.id, "minus", a.id, "GND");
+  W(c, a.id, "D9", r.id, "a"); W(c, r.id, "b", led.id, "anodo"); W(c, led.id, "catodo", a.id, "GND2");
+  a.state.pins = a.state.pins || {}; a.state.pins["D9"] = { mode: "output", val: 1 };
+  for (let i = 0; i < 3; i++) c.tick(0.1);
+  console.log("T13 LED I =", (led.state.ledI * 1000).toFixed(1), "mA | powered =", a.state.powered);
+  check("T13 Arduino alimentado por VIN (powered)", a.state.powered === true);
+  check("T13 LED enciende con cátodo en GND2 (I ≈ 13 mA)", led.state.ledOn === true && approx(led.state.ledI * 1000, 13.1, 1.5));
+}
+
 console.log(`\n==== RESULTADO: ${pass} pasados, ${fail} fallados ====`);
 process.exit(fail ? 1 : 0);

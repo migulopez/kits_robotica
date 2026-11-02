@@ -101,6 +101,11 @@
       };
       const union = (a, b) => parent.set(find(a), find(b));
       this.wires.forEach((w) => union(this.key(w.a), this.key(w.b)));
+      // los pines GND de un mismo componente son el mismo nodo físico (p. ej. GND y GND2 del Arduino)
+      comps.forEach((c) => {
+        const gnds = cat[c.type].pins.filter((p) => p.gnd).map((p) => this.key({ comp: c.id, pin: p.id }));
+        for (let i = 1; i < gnds.length; i++) union(gnds[0], gnds[i]);
+      });
       const ids = new Map(); let N = 0;
       const nodeOf = (k) => {
         const s = typeof k === "string" ? k : k.comp + ":" + k.pin;
@@ -216,15 +221,18 @@
           }
           case "arduino": case "esp32": {
             const vcc = vccOf(c);
+            const gndPin = cat[c.type].pins.find((p) => p.gnd);
             const powered =
-              c.props.usb !== false ||
+              this.masterPower &&
+              (c.props.usb !== false ||
               vPrev(K(c, "VIN")) > 4.5 ||
               vPrev(K(c, "5V")) > 4.5 ||
-              (c.type === "esp32" && vPrev(K(c, "3V3")) > 3);
+              (c.type === "esp32" && vPrev(K(c, "3V3")) > 3));
             c.state.powered = powered;
             if (powered) {
-              SS(K(c, "5V"), null, vcc, 0.2);
-              SS(K(c, "3V3"), null, 3.3, 0.2);
+              // la fuente interna retorna al GND propio de la placa, no a la tierra global
+              SS(K(c, "5V"), gndPin ? K(c, gndPin.id) : null, vcc, 0.2);
+              SS(K(c, "3V3"), gndPin ? K(c, gndPin.id) : null, 3.3, 0.2);
               const pins = c.state.pins || {};
               for (const id of Object.keys(pins)) {
                 const st = pins[id];
