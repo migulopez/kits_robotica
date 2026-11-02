@@ -378,6 +378,13 @@ body {
 
 /* ---------- CTA del laboratorio virtual en el encabezado ---------- */
 .header-cta { text-align: center; margin: 14px 0 0; }
+.header-manual {
+  display: inline-block; margin-left: 12px; padding: 12px 20px;
+  font-size: 0.95rem; font-weight: 700; text-decoration: none;
+  color: #0c4a6e; background: #e0f2fe; border: 1px solid #7dd3fc; border-radius: 12px;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+.header-manual:hover { background: #bae6fd; transform: translateY(-2px); }
 .lab-open-btn.big {
   font-size: 1.05rem;
   padding: 13px 28px;

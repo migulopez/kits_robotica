@@ -23,6 +23,7 @@ uno por uno con su ficha técnica y educativa ampliada.
 - La ficha se cierra con el botón ✕, haciendo clic fuera de la ventana o con la tecla `Esc`.
 - Animaciones suaves de apertura, aparición escalonada de componentes y transiciones entre vistas.
 - Diseño **responsivo**, adaptable a computadores y tabletas.
+- **📖 Manual de usuario en PDF (56 páginas)**: [docs/MANUAL.pdf](docs/MANUAL.pdf) — también accesible desde el botón «📖 Manual de usuario (PDF)» del encabezado de la página. Incluye los 3 kits con la ficha técnica de cada uno de sus 39 componentes, el laboratorio completo (colocar/cablear/medir/programar, los 25 componentes con sus pines y kit, las 11 prácticas guiadas con diagramas y código), referencia de pines, simulación, solución de problemas y glosario. Se regenera con `node tools/export_data.js && python3 tools/build_manual.py` (requiere `reportlab` y `svglib`).
 
 ## 📦 Contenido de los kits
 
@@ -51,6 +52,11 @@ kits_robotica/
 │       └── ui.js               # Mesa interactiva, cables, instrumentos, editor
 ├── tests/
 │   └── engine.test.js          # Pruebas del motor de simulación (node)
+├── tools/
+│   ├── export_data.js          # Vuelca los datos reales a tools/manual_data.json
+│   └── build_manual.py         # Genera docs/MANUAL.pdf (requiere reportlab + svglib)
+├── docs/
+│   └── MANUAL.pdf              # 📖 Manual de usuario completo (56 páginas)
 ├── assets/
 │   └── images/
 │       ├── kits/               # Ilustraciones de las 3 cajas (kit1/2/3.svg)
