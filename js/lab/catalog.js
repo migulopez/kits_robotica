@@ -46,11 +46,13 @@
     esp32Pins.push(P(n, n, 170, 50 + i * 11, n === "5V" ? { vcc: true } : {}))
   );
 
-  // Pines del LCD 16x2 sobre lcd1602.svg — bien separados
-  const lcdPins = [];
-  ["VSS", "VDD", "VO", "RS", "RW", "E", "D0", "D1", "D2", "D3", "D4", "D5", "D6", "D7", "A", "K"].forEach((n, i) =>
-    lcdPins.push(P(n, n, 38 + i * 11, 66, n === "VSS" || n === "K" ? { gnd: true } : n === "VDD" || n === "A" ? { vcc: true } : {}))
-  );
+  // LCD 16x2 CON MÓDULO I2C (lcd_i2c.svg): solo 4 pines — VCC, GND, SDA, SCL
+  const lcdPins = [
+    P("vcc", "VCC", 44, 66, { vcc: true }),
+    P("gnd", "GND", 66, 66, { gnd: true }),
+    P("sda", "SDA", 88, 66),
+    P("scl", "SCL", 110, 66)
+  ];
 
   global.LAB_CATALOG = {
     /* ---------- Alimentación ---------- */
@@ -223,11 +225,12 @@
 
     /* ---------- Visualización ---------- */
     lcd: {
-      name: "Pantalla LCD 16x2", cat: "visualizacion", kits: [3],
-      img: "assets/images/components/lcd1602.svg",
+      name: "Pantalla LCD 16x2 (I2C)", cat: "visualizacion", kits: [3],
+      img: "assets/images/components/lcd_i2c.svg",
       pins: lcdPins,
       size: 230, pinSize: 10, labels: true,
-      screen: { x: 42, y: 86, w: 156, h: 72 }
+      screen: { x: 42, y: 86, w: 156, h: 72 },
+      hint: "Conecta VCC/GND a la alimentación y SDA/SCL a los pines I2C del microcontrolador (UNO: A4/A5; ESP32: D21/D22)."
     },
 
     /* ---------- Instrumentos ---------- */

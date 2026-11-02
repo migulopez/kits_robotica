@@ -85,7 +85,7 @@
         const item = document.createElement("div");
         item.className = "pal-item";
         item.title = def.name + (def.hint ? " — " + def.hint : "") + "\n(Arrastra a la mesa)";
-        item.innerHTML = `<img src="${def.img}" alt=""><span>${def.name}</span>`;
+        item.innerHTML = `<img src="${def.img}" alt=""><span>${def.name}</span><em class="pal-kit">${(def.kits || []).map((k) => "K" + k).join("·")}</em>`;
         item.addEventListener("pointerdown", (e) => startPlace(t, e));
         list.appendChild(item);
       }
@@ -645,6 +645,7 @@
     let ctrl = LabUI.mcuCtrls.get(mcu.id);
     if (!ctrl) { ctrl = new MCUController(LabUI.engine, mcu); ctrl.serialCb = serialLine; LabUI.mcuCtrls.set(mcu.id, ctrl); }
     try {
+      LabUI.engine.solve();          // asegurar estado eléctrico fresco antes del primer setup()
       ctrl.load(code);
       toast(`▶ Programa cargado y ejecutándose en ${LAB_CATALOG[mcu.type].name}.`);
     } catch (e) {
@@ -654,17 +655,26 @@
   }
 
   /* ================= prácticas guiadas ================= */
+  // etiquetas «Kit N» de un tipo de componente y de un proyecto completo
+  function kitBadges(type) {
+    return (LAB_CATALOG[type].kits || []).map((k) => `<i class="kit-badge">Kit ${k}</i>`).join("");
+  }
+  function projectKits(p) {
+    return [...new Set(p.comps.flatMap((c) => LAB_CATALOG[c.type].kits || []))].sort((a, b) => a - b);
+  }
+
   function openProjects(project) {
     const modal = $("#project-modal");
     const content = $("#pm-content");
     modal.classList.remove("hidden");
     if (!project) {
       content.innerHTML = `<h2>📚 Prácticas guiadas de electrónica y robótica</h2>
-        <p class="muted">Elige una práctica. Se colocarán los componentes en la mesa <b>sin conectar</b>: tú debes tender los cables siguiendo el diagrama y los pasos.</p>
+        <p class="muted">Elige una práctica. Se colocarán los componentes en la mesa <b>sin conectar</b>: tú debes tender los cables siguiendo el diagrama y los pasos. Las etiquetas indican de qué kit es cada componente.</p>
         <div class="proj-list">${PROJECTS.map((p) => `
           <button class="proj-card" data-p="${p.id}">
             <b>Práctica ${p.n}: ${p.title}</b>
             <span>${p.objective}</span>
+            <span class="proj-kits">${projectKits(p).map((k) => `<i class="kit-badge">Kit ${k}</i>`).join("")}</span>
           </button>`).join("")}</div>`;
       content.querySelectorAll(".proj-card").forEach((b) => (b.onclick = () => openProjects(PROJECTS.find((p) => p.id === b.dataset.p))));
       return;
@@ -672,7 +682,8 @@
     content.innerHTML = `
       <h2>Práctica ${project.n}: ${project.title}</h2>
       <p><b>🎯 Objetivo:</b> ${project.objective}</p>
-      <p><b>🧰 Componentes:</b> ${project.comps.map((c) => LAB_CATALOG[c.type].name).join(", ")}</p>
+      <p><b>🧰 Componentes (y su kit):</b> ${project.comps.map((c) => `${LAB_CATALOG[c.type].name} ${kitBadges(c.type)}`).join(" · ")}</p>
+      <p class="muted">Kits usados en esta práctica: ${projectKits(project).map((k) => `<i class="kit-badge">Kit ${k}</i>`).join("")}</p>
       <h3>🔌 Diagrama de conexiones</h3>
       <div class="pm-preview"><div class="pm-world" id="pm-world"></div></div>
       <div class="pm-cols">
